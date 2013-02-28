@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package blokus;
+package Blokus;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -56,6 +56,7 @@ public class GameDesignerMain implements ActionListener{
         logout.setForeground(Color.blue);
         c.insets = new Insets(10,80,5,30);
         window.add(logout,c);
+        logout.addActionListener(this);
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
@@ -80,6 +81,7 @@ public class GameDesignerMain implements ActionListener{
         c.gridx = 2;
         game1Delete.setForeground(Color.red);
         innerPane.add(game1Delete,c);
+        game1Delete.setEnabled(false);
         game1Delete.addActionListener(this);
         innerPane.setBorder(borderBlack);
         c.gridx = 0;
@@ -94,16 +96,25 @@ public class GameDesignerMain implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == logout){
-            //logout user
+            //logout user and take to main menu
+            window.setVisible(false);
+            MainMenu.createAndShowGUI();
         }
         else if(ae.getSource() == newGame){
             //open new game window
+            window.setVisible(false);
+            ModifyGameDesign game2 = new ModifyGameDesign();
+            game2.run();
         }
         else if(ae.getSource() == game1Edit){
             //open edit new game window
+            //pull info from database
+            window.setVisible(false);
+            ModifyGameDesign game2 = new ModifyGameDesign();
+            game2.run();
         }
         else if(ae.getSource() == game1Delete){
-            //delete game
+            //delete game from database
         }
     }
     

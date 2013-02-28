@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package blokus;
+package Blokus;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -153,16 +153,28 @@ public class ModifyGameDesign implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == logout){
-          //logout user  
+            //logout and send to main menu
+            window.setVisible(false);
+            MainMenu.createAndShowGUI(); 
         }
         else if(ae.getSource() == backButton){
             //take back to main menu screen
+            window.setVisible(false);
+            GameDesignerMain game = new GameDesignerMain();
+            game.run();
         }
         else if(ae.getSource() == boardButton){
             //take to board where you can edit which squares are blocked
+            window.setVisible(false);
+            EditBoard board = new EditBoard();
+            board.run();
         }
         else if(ae.getSource() == saveButton){
             //save board to database and then take back to menu with it added to the GUI
+            window.setVisible(false);
+            JOptionPane.showMessageDialog(null, "Game Board Options have been Saved!");
+            GameDesignerMain game = new GameDesignerMain();
+            game.run();
         }
     }
     

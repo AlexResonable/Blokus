@@ -2,10 +2,8 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package blokus;
+package Blokus;
 
-
-import java.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -15,7 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  *
@@ -153,6 +150,9 @@ public final class PreviewBoard implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == backGame){
             //go back
+            window.setVisible(false);
+            GameWizard back = new GameWizard();
+            back.run();
         }
     }
 }

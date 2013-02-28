@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package blokus;
+package Blokus;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,6 +16,8 @@ import java.awt.event.ActionListener;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
+
 
 /**
  *
@@ -28,13 +30,15 @@ public class GameWizard implements ActionListener {
     private JTextField player2 = new JTextField(15);
     private JTextField player3 = new JTextField(15);
     private JTextField player4 = new JTextField(15);
-    private SpinnerModel turnModel = new SpinnerNumberModel(10, 3, 99, 1);
-    private JSpinner turnTime = new JSpinner(turnModel);
-    private SpinnerModel gameModel = new SpinnerNumberModel(30, 5, 120, 1);
-    private JSpinner gameTime = new JSpinner(gameModel);
+    JRadioButton easy = new JRadioButton("Easy");
+    JRadioButton medium = new JRadioButton("Medium");
+    JRadioButton hard = new JRadioButton("Hard");
+    String[] games = {"Normal Game"};
+    private JComboBox gameNames = new JComboBox(games);
+    DefaultComboBoxModel model = new DefaultComboBoxModel();  
     private JButton boardButton = new JButton("Preview Board");
     private JButton backButton = new JButton("Back");
-    private JButton saveButton = new JButton("Play!!");
+    private JButton playButton = new JButton("Play!!");
     private JPanel innerPane = new JPanel();
     
     public void run(){
@@ -96,24 +100,73 @@ public class GameWizard implements ActionListener {
         c.gridy = 3;
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player4,c);
+        gameNames.setModel(model);
+        gameNames.addItem("Normal Game");
+        JPanel gameMode = new JPanel(new GridBagLayout());
+        TitledBorder title = BorderFactory.createTitledBorder("Game Mode");
+        gameMode.setBorder(title);
+        easy.setSelected(true);
+        ButtonGroup mode = new ButtonGroup();
+        mode.add(easy);
+        mode.add(medium);
+        mode.add(hard);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.insets = new Insets(5,0,5,5);
+        gameMode.add(easy,c);
+        easy.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                //get easy games from database and show them
+                gameNames.removeAllItems();
+                gameNames.addItem("Normal Game");
+                
+            }
+        });
+        c.gridx = 1;
+        c.gridy = 0;
+        c.insets = new Insets(5,0,5,5);
+        gameMode.add(medium,c);
+        medium.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                //get easy games from database and show them
+                gameNames.removeAllItems();
+                gameNames.addItem(" ");
+                
+            }
+        });
+        easy.addActionListener(this);
+        c.gridx = 2;
+        c.gridy = 0;
+        c.insets = new Insets(5,0,5,5);
+        gameMode.add(hard,c);
+        hard.addActionListener(new ActionListener(){
+            public void actionPerformed(ActionEvent e){
+                //get easy games from database and show them
+                gameNames.removeAllItems();
+                gameNames.addItem(" ");
+                
+            }
+        });
+        c.gridx = 0;
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.insets = new Insets(5,10,5,10);
+        gameMode.add(new JLabel("Game"),c);
+        c.gridx = 1;
+        c.gridy = 1;
+        c.gridwidth = 2;
+        c.insets = new Insets(5,0,5,10);
+        gameMode.add(gameNames,c);
+        
+        
         c.gridx = 0;
         c.gridy = 4;
+        c.gridwidth = 3;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Turn Time (seconds) "),c);
-        c.gridx = 1;
-        c.gridy = 4;
-        c.insets = new Insets(5,0,5,130);
-        innerPane.add(turnTime,c);
-        c.gridx = 0;
-        c.gridy = 5;
-        c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Game Time (minutes)"),c);
+        innerPane.add(gameMode,c);
+        
         c.gridx = 1;
         c.gridy = 5;
-        c.insets = new Insets(5,0,5,130);
-        innerPane.add(gameTime,c);
-        c.gridx = 1;
-        c.gridy = 6;
         c.gridwidth = 3;
         c.insets = new Insets(20,10,15,20);
         innerPane.add(boardButton,c);
@@ -127,27 +180,38 @@ public class GameWizard implements ActionListener {
         window.add(innerPane,c);
         c.gridx = 0;
         c.gridy = 3;
+        c.ipady = 5;
         c.insets = new Insets(0,30,20,350);
         window.add(backButton, c);
         backButton.addActionListener(this);
         c.gridx = 2;
         c.gridy = 3;
         c.insets = new Insets(0,30,20,30);
-        window.add(saveButton, c);
-        saveButton.addActionListener(this);
+        playButton.setBackground(Color.blue);
+        playButton.setForeground(Color.white);
+        window.add(playButton, c);
+        playButton.addActionListener(this);
         window.pack();
-    }
 
+
+    }
     @Override
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == backButton){
             //take back to main menu screen
+            window.setVisible(false);
+            MainMenu.createAndShowGUI();
         }
         else if(ae.getSource() == boardButton){
             //take to board where you can edit which squares are blocked
+            window.setVisible(false);
+            PreviewBoard board = new PreviewBoard();
+            board.run();
         }
-        else if(ae.getSource() == saveButton){
+        else if(ae.getSource() == playButton){
             //save board to database and then take back to menu with it added to the GUI
+            //window.setVisible(false);
+            
         }
     }
     

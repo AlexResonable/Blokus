@@ -2,10 +2,9 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package blokus;
+package Blokus;
 
 
-import java.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -15,7 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -164,9 +163,16 @@ public final class EditBoard implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == backGame){
             //go back
+            this.window.setVisible(false);
+            ModifyGameDesign game = new ModifyGameDesign();
+            game.run();
         }
         else if(ae.getSource() == saveGame){
             //save game
+            this.window.setVisible(false);
+            JOptionPane.showMessageDialog(null, "Game Board has been Saved!");
+            ModifyGameDesign game = new ModifyGameDesign();
+            game.run();
         }
         else{
             for(int i = 0; i < sizeX; i++){
