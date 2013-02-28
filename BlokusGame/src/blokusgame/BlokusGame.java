@@ -62,8 +62,8 @@ public class BlokusGame{
                     else{
                         try{
                             board.placePiece(players[turn].pieces.get(
-                            pieceIndex), selected.x - GamePiece.SHAPE_GRID / 2,
-                            selected.y - GamePiece.SHAPE_GRID / 2, players[turn].firstMove);
+                            pieceIndex), selected.x - GamePiece.SHAPE_CONTAINER_SIZE / 2,
+                            selected.y - GamePiece.SHAPE_CONTAINER_SIZE / 2, players[turn].firstMove);
                             drawBoard();
                             players[turn].pieces.remove(pieceIndex);
                             players[turn].firstMove = false;
@@ -193,11 +193,19 @@ public class BlokusGame{
             topSidePanel.add(jsp3);
             bottomSidePanel.add(jsp4);
 
-           // leftSidePanel.add(surrender);
-            leftSidePanel.add(player1);
-            rightSidePanel.add(player2);
-            topSidePanel.add(player3);
-            bottomSidePanel.add(player4);
+            
+            leftSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
+            rightSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
+            topSidePanel.setPreferredSize(new Dimension(520,GamePiece.DEFAULT_RESOLUTION+20));
+            bottomSidePanel.setPreferredSize(new Dimension(520,GamePiece.DEFAULT_RESOLUTION+20));
+
+            //leftSidePanel.add(player1);
+            //rightSidePanel.add(player2);
+            //topSidePanel.add(player3);
+            //bottomSidePanel.add(player4);
+
+
+            mainPanel.setLayout(new BorderLayout());
 
             mainPanel.add(leftSidePanel,BorderLayout.LINE_START);
             mainPanel.add(rightSidePanel,BorderLayout.LINE_END);
@@ -212,19 +220,19 @@ public class BlokusGame{
         }
 
         private void rotateClockwise(){
-            players[turn].pieces.get(pieceIndex).rotateClockwise();
+            players[turn].pieces.get(pieceIndex).rotateRight();
             board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
             drawBoard();
         }
 
         private void rotateCounterClockwise(){
-            players[turn].pieces.get(pieceIndex).rotateCounterClockwise();
+            players[turn].pieces.get(pieceIndex).rotateLeft();
             board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
             drawBoard();
         }
 
         private void flipPiece(){
-            players[turn].pieces.get(pieceIndex).flipOver();
+            players[turn].pieces.get(pieceIndex).flip();
             board.overlay(players[turn].pieces.get(pieceIndex), selected.x, selected.y);
             drawBoard();
         }
@@ -359,7 +367,7 @@ public class BlokusGame{
             for (int i = 0; i < NUM_PLAYERS; i++){
                 sb.append(Board.getColorName(getPlayerColor(i)));
                 sb.append(": ");
-                sb.append(players[i].getScore());
+                sb.append(players[i].getTotalScore());
                 sb.append("\n");
             }
             JOptionPane.showMessageDialog(this, sb.toString(), "Game Over", JOptionPane.INFORMATION_MESSAGE );

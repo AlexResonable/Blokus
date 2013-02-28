@@ -4,326 +4,392 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-public class GamePiece {
-   public static final int SHAPE_GRID = 7;
-   public static final int PIECE = 3;
-   public static final int ADJACENT = 2;
-   public static final int CORNER = 1;
-   public static final int BLANK = 0;
+public class GamePiece{
+    public static final int BLANK_CELL = 0;
+    public static final int CORNER_CELL = 1;
+    public static final int ADJACENT_CELL = 2;
+    public static final int PIECE_CELL = 3;
+    public static final int SHAPE_CONTAINER_SIZE = 7;
 
-   public static final int DEFAULT_RESOLUTION = 120;
+    public static final int POINT_WEIGHT = 5;
+    public static final int NUMBER_OF_PIECES = 21;
+    public static final int DEFAULT_RESOLUTION = 120;
 
-   private int[][] grid;
-   private int color;
+    private int[][] shapeContainer;
+    private int shapeColor;
 
-   public GamePiece(int[][] shape, int color){
-      if (shape.length != SHAPE_GRID || shape[0].length != SHAPE_GRID){
-         throw new IllegalArgumentException("Shape 2D array must be 7 cells x 7 cells.");
-      }
-      grid = (int[][]) shape.clone();
-      this.color = color;
-   }
+    public GamePiece(int[][] shape, int color){
+        shapeContainer = (int[][]) shape.clone();
+        shapeColor = color;
+    }
 
-   public void rotateClockwise(){
-      int[][] temp = new int[SHAPE_GRID][SHAPE_GRID];
+    public void rotateLeft(){
+        int[][] temp = new int[SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
+        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
+            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
+                temp[col][SHAPE_CONTAINER_SIZE - row - 1] = shapeContainer[row][col];
 
-      for (int x = 0; x < SHAPE_GRID; x++)
-         for (int y = 0; y < SHAPE_GRID; y++)
-            temp[SHAPE_GRID - y - 1][x] = grid[x][y];
+        shapeContainer = temp;
+    }
 
-      grid = temp;
-   }
+    public void rotateRight(){
+        int[][] temp = new int[SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
+        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
+            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
+                temp[SHAPE_CONTAINER_SIZE - col - 1][row] = shapeContainer[row][col];
 
-   public void rotateCounterClockwise(){
-      int[][] temp = new int[SHAPE_GRID][SHAPE_GRID];
+        shapeContainer = temp;
+    }
 
-      for (int x = 0; x < SHAPE_GRID; x++)
-         for (int y = 0; y < SHAPE_GRID; y++)
-            temp[y][SHAPE_GRID - x - 1] = grid[x][y];
+    public void flip(){
+        int[][] temp = new int[SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
+        for(int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
+            for(int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
+                temp[SHAPE_CONTAINER_SIZE - row - 1][col] = shapeContainer[row][col];
 
-      grid = temp;
-   }
+        shapeContainer = temp;
+    }
 
-   public void flipOver(){
-      int[][] temp = new int[SHAPE_GRID][SHAPE_GRID];
+    public BufferedImage render(int size){
+        int cellSize = size / (SHAPE_CONTAINER_SIZE);
+        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+        Graphics2D g = (Graphics2D) image.getGraphics();
 
-      for(int x = 0; x < SHAPE_GRID; x++)
-         for(int y = 0; y < SHAPE_GRID; y++)
-            temp[SHAPE_GRID - x - 1][y] = grid[x][y];
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, size, size);
 
-      grid = temp;
-   }
-
-   public int getValue(int x, int y){
-      return grid[x][y];
-   }
-
-   public int getColor(){
-      return color;
-   }
-
-   public int getPoints(){
-      int points = 0;
-      for (int y = 0; y < SHAPE_GRID; y++)
-         for (int x = 0; x < SHAPE_GRID; x++)
-            if (grid[x][y] == PIECE) points++;
-      return points;
-   }
-
-   public BufferedImage render(int size){
-      BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-      int cellSize = size / (SHAPE_GRID);
-      Graphics2D g = (Graphics2D) image.getGraphics();
-
-      g.setColor(Color.WHITE);
-      g.fillRect(0, 0, size, size);
-
-      for (int x = 0; x < SHAPE_GRID; x++)
-      {
-         for (int y = 0; y < SHAPE_GRID; y++)
-         {
-            if (grid[x][y] == PIECE)
-            {
-               g.setColor(Board.getColor(color));
-               g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-               g.setColor(Color.BLACK);
-               g.drawRect(x * cellSize, y * cellSize, cellSize, cellSize);
+        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++){
+            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++){
+                if (shapeContainer[row][col] == PIECE_CELL){
+                    g.setColor(Board.getColor(shapeColor));
+                    g.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
+                    g.setColor(Color.BLACK);
+                    g.drawRect(row * cellSize, col * cellSize, cellSize, cellSize);
+                }
             }
-         }
-      }
-      return image;
-   }
+        }
 
-   @Override
-   public String toString(){
-      StringBuffer sb = new StringBuffer();
-      for (int y = 0; y < SHAPE_GRID; y++)
-      {
-         for (int x = 0; x < SHAPE_GRID; x++)
-         {
-            sb.append(grid[x][y]);
-            sb.append(" ");
-         }
-         sb.append("\n");
-      }
-      return sb.toString();
-   }
+        return image;
+    }
 
-   public static int[][][] getAllShapes(){
-      int[][][] shapes = new int[21][SHAPE_GRID][SHAPE_GRID];
-      int i = 0;
+    public static int[][][] getAllShapes(){
+        int[][][] shapes = new int[NUMBER_OF_PIECES][SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
+        int i = 0;
 
-      shapes[i++] = new int[][] { // * * * * *
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {1, 2, 2, 2, 2, 2, 1},
-         {2, 3, 3, 3, 3, 3, 2},
-         {1, 2, 2, 2, 2, 2, 1},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { // * * * *
-         {0, 0, 0, 0, 0, 0, 0}, //   *
-         {0, 1, 2, 1, 0, 0, 0},
-         {0, 2, 3, 2, 2, 2, 1},
-         {0, 2, 3, 3, 3, 3, 2},
-         {0, 1, 2, 2, 2, 2, 1},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { //   * * *
-         {0, 0, 1, 2, 1, 0, 0},   // * *
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 2, 3, 2, 1, 0},
-         {0, 0, 2, 3, 3, 2, 0},
-         {0, 0, 1, 2, 3, 2, 0},
-         {0, 0, 0, 1, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { //   *
-         {0, 0, 0, 0, 0, 0, 0}, // * * * *
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 1, 2, 3, 2, 2, 1},
-         {0, 2, 3, 3, 3, 3, 2},
-         {0, 1, 2, 2, 2, 2, 1},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { //   *
-         {0, 0, 0, 0, 0, 0, 0}, // * * *
-         {0, 0, 1, 2, 1, 0, 0}, //   *
-         {0, 1, 2, 3, 2, 1, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 1, 2, 2, 3, 2, 0},
-         {0, 0, 0, 1, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { // *
-         {0, 0, 0, 0, 0, 0, 0}, // * * *
-         {0, 0, 1, 2, 1, 0, 0}, //   *
-         {0, 1, 2, 3, 2, 1, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 1, 2, 3, 2, 1, 0},
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { // * * *
-         {0, 0, 0, 0, 0, 0, 0},   // *   *
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 1, 2, 2, 2, 1, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 2, 3, 2, 3, 2, 0},
-         {0, 1, 2, 1, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { // * *
-         {0, 0, 0, 0, 0, 0, 0}, // * * *
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 1, 2, 2, 2, 1, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 1, 2, 3, 3, 2, 0},
-         {0, 0, 1, 2, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { //   *
-         {0, 0, 0, 0, 0, 0, 0}, //   * *
-         {0, 0, 0, 1, 2, 1, 0}, // * *
-         {0, 0, 1, 2, 3, 2, 0},
-         {0, 1, 2, 3, 3, 2, 0},
-         {0, 2, 3, 3, 2, 1, 0},
-         {0, 1, 2, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { // *
-         {0, 0, 0, 0, 0, 0, 0},   // * * *
-         {0, 0, 1, 2, 1, 0, 0},   // *
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 1, 2, 3, 2, 1, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 1, 2, 2, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { // *
-         {0, 0, 1, 2, 1, 0, 0},   // *
-         {0, 0, 2, 3, 2, 0, 0},   // * * *
-         {0, 0, 2, 3, 2, 2, 1},
-         {0, 0, 2, 3, 3, 3, 2},
-         {0, 0, 1, 2, 2, 2, 1},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
-
-      shapes[i++] = new int[][] { // *
-         {0, 0, 0, 0, 0, 0, 0},   // * * *
-         {0, 0, 1, 2, 2, 1, 0},   //     *
-         {0, 0, 2, 3, 3, 2, 0},
-         {0, 1, 2, 3, 2, 1, 0},
-         {0, 2, 3, 3, 2, 0, 0},
-         {0, 1, 2, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+////////////////////////////////////////////////////////////////////////////////
+        // monomino
+////////////////////////////////////////////////////////////////////////////////
 
 
-      shapes[i++] = new int[][] { // * * * *
-         {0, 0, 1, 2, 1, 0, 0},   //
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+        // *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
 
-      shapes[i++] = new int[][] { // * *
-         {0, 0, 0, 0, 0, 0, 0},   //   * *
-         {0, 0, 1, 2, 2, 1, 0},
-         {0, 1, 2, 3, 3, 2, 0},
-         {0, 2, 3, 3, 2, 1, 0},
-         {0, 1, 2, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+////////////////////////////////////////////////////////////////////////////////
+        // domino
+////////////////////////////////////////////////////////////////////////////////
 
-      shapes[i++] = new int[][] { // * *
-         {0, 0, 0, 0, 0, 0, 0}, //   * *
-         {0, 1, 2, 2, 1, 0, 0},
-         {0, 2, 3, 3, 2, 0, 0},
-         {0, 2, 3, 3, 2, 0, 0},
-         {0, 1, 2, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
 
-      shapes[i++] = new int[][] { // *
-         {0, 0, 0, 0, 0, 0, 0}, // * * *
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 1, 2, 3, 2, 1, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 1, 2, 2, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+        // * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
 
-      shapes[i++] = new int[][] { //   *
-         {0, 0, 0, 0, 0, 0, 0}, // * * *
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 1, 2, 2, 2, 2, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 1, 2, 2, 3, 2, 0},
-         {0, 0, 0, 1, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+////////////////////////////////////////////////////////////////////////////////
+        // triominoes
+////////////////////////////////////////////////////////////////////////////////
 
-      shapes[i++] = new int[][] { //
-         {0, 0, 0, 0, 0, 0, 0},   // * * *
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 1, 2, 2, 2, 1, 0},
-         {0, 2, 3, 3, 3, 2, 0},
-         {0, 1, 2, 2, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
 
-      shapes[i++] = new int[][] { // *
-         {0, 0, 0, 0, 0, 0, 0},   // * *
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 0, 2, 3, 2, 1, 0},
-         {0, 0, 2, 3, 3, 2, 0},
-         {0, 0, 1, 2, 2, 1, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+        // *
+        // * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 1, 0},
+            {0, 0, 2, 3, 3, 2, 0},
+            {0, 0, 1, 2, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
 
-      shapes[i++] = new int[][] { // * *
-         {0, 0, 0, 0, 0, 0, 0},   //
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+        // * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 2, 2, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 2, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
 
-      shapes[i++] = new int[][] { // *
-         {0, 0, 0, 0, 0, 0, 0},   //
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 0, 2, 3, 2, 0, 0},
-         {0, 0, 1, 2, 1, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0},
-         {0, 0, 0, 0, 0, 0, 0}
-      };
+////////////////////////////////////////////////////////////////////////////////
+        // tetrominoes
+////////////////////////////////////////////////////////////////////////////////
 
-      return shapes;
-   }
+
+        //   *
+        // * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 1, 2, 3, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 2, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // * * *
+        //     *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 2, 2, 2, 2, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 2, 3, 2, 0},
+            {0, 0, 0, 1, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // * * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        //   * *
+        // * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 2, 1, 0},
+            {0, 1, 2, 3, 3, 2, 0},
+            {0, 2, 3, 3, 2, 1, 0},
+            {0, 1, 2, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // * *
+        // * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 2, 2, 1, 0, 0},
+            {0, 2, 3, 3, 2, 0, 0},
+            {0, 2, 3, 3, 2, 0, 0},
+            {0, 1, 2, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+////////////////////////////////////////////////////////////////////////////////
+        // pentominoes
+////////////////////////////////////////////////////////////////////////////////
+
+
+        // * * * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {1, 2, 2, 2, 2, 2, 1},
+            {2, 3, 3, 3, 3, 3, 2},
+            {1, 2, 2, 2, 2, 2, 1},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // *
+        // * * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 2, 1, 0, 0, 0},
+            {0, 2, 3, 2, 2, 2, 1},
+            {0, 2, 3, 3, 3, 3, 2},
+            {0, 1, 2, 2, 2, 2, 1},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // *
+        // *
+        // * *
+        //   *
+        shapes[i++] = new int[][] {
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 2, 3, 2, 1, 0},
+            {0, 0, 2, 3, 3, 2, 0},
+            {0, 0, 1, 2, 3, 2, 0},
+            {0, 0, 0, 1, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        //   *
+        // * * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 1, 2, 3, 2, 2, 1},
+            {0, 2, 3, 3, 3, 3, 2},
+            {0, 1, 2, 2, 2, 2, 1},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        //   *
+        // * * *
+        //     *
+        shapes[i++] = new int[][] { 
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 1, 2, 3, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 2, 3, 2, 0},
+            {0, 0, 0, 1, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        //   *
+        // * * *
+        //   *
+        shapes[i++] = new int[][] { 
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 1, 2, 3, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 3, 2, 1, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // * * *
+        // *   *
+        shapes[i++] = new int[][] { 
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 2, 2, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 2, 3, 2, 3, 2, 0},
+            {0, 1, 2, 1, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // * * *
+        //   * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 1, 2, 2, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 3, 3, 2, 0},
+            {0, 0, 1, 2, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        //     *
+        //   * *
+        // * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 1, 2, 1, 0},
+            {0, 0, 1, 2, 3, 2, 0},
+            {0, 1, 2, 3, 3, 2, 0},
+            {0, 2, 3, 3, 2, 1, 0},
+            {0, 1, 2, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        //   *
+        //   *
+        // * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 1, 2, 3, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 2, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        // *
+        // *
+        // * * *
+        shapes[i++] = new int[][] {
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 2, 3, 2, 2, 1},
+            {0, 0, 2, 3, 3, 3, 2},
+            {0, 0, 1, 2, 2, 2, 1},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        //   * *
+        //   *
+        // * *
+        shapes[i++] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 2, 1, 0},
+            {0, 0, 2, 3, 3, 2, 0},
+            {0, 1, 2, 3, 2, 1, 0},
+            {0, 2, 3, 3, 2, 0, 0},
+            {0, 1, 2, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+
+        return shapes;
+    }
+
+    public int getValue(int row, int col){
+        return shapeContainer[row][col];
+    }
+
+    public int getColor(){
+        return shapeColor;
+    }
+
+    public int getTotalPoints(){
+        int totalPoints = 0;
+        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
+            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
+                if (shapeContainer[row][col] == PIECE_CELL)
+                    totalPoints++;
+        return totalPoints * POINT_WEIGHT;
+    }
+
+    public int getContainerSize(){
+        return SHAPE_CONTAINER_SIZE;
+    }
+
+    @Override
+    public String toString(){
+        StringBuffer stringBuffer = new StringBuffer();
+        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++){
+            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++){
+                stringBuffer.append(shapeContainer[row][col]);
+                stringBuffer.append(" ");
+            }
+            stringBuffer.append("\n");
+        }
+        return stringBuffer.toString();
+    }
 }

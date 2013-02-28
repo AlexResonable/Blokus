@@ -4,11 +4,10 @@ import java.util.LinkedList;
 
 public class Player{
     public LinkedList<GamePiece> pieces;
-    public boolean firstMove = true;
     public boolean canPlay = true;
+    public boolean firstMove = true;
 
-    public Player(int color)
-    {
+    public Player(int color){
         int[][][] shapes = GamePiece.getAllShapes();
 
         pieces = new LinkedList<GamePiece>();
@@ -18,11 +17,11 @@ public class Player{
         }
     }
 
-    public int getScore(){
+    public int getTotalScore(){
         int total = 0;
 
         for(GamePiece bp : pieces){
-            total += bp.getPoints();
+            total += bp.getTotalPoints();
         }
         return total;
     }

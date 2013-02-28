@@ -1,8 +1,7 @@
 package blokusgame;
-
-import java.awt.image.BufferedImage;
-import java.awt.Graphics2D;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.awt.Point;
 
 public class Board {
@@ -11,11 +10,18 @@ public class Board {
     public static final int RED = 2;
     public static final int YELLOW = 3;
     public static final int GREEN = 4;
+
     public static final int BOARD_SIZE = 20;
+
     public static final int DEFAULT_RESOLUTION = 500;
 
+    public static final int PLAYER1 = 1;
+    public static final int PLAYER2 = 2;
+    public static final int PLAYER3 = 3;
+    public static final int PLAYER4 = 4;
+
     public static final Color BOARD_COLOR = Color.WHITE;
-    public static final Color GRID_LINE_COLOR = Color.GRAY;
+    public static final Color GRID_COLOR = Color.GRAY;
 
     public static final String OFF_BOARD_ERROR = "Game Piece must be placed entirely on the board.";
     public static final String ADJACENCY_ERROR = "Game Pieces of the same color cannot share edges with one another.";
@@ -44,33 +50,33 @@ public class Board {
                 array[row][col] = NONE;
     }
 
-    public boolean isValidMove(GamePiece bp, int xOffset, int yOffset, boolean firstMove) throws IllegalMoveException
-    {
+    public boolean isValidMove(GamePiece piece, int xOffset, int yOffset, boolean firstMove) throws IllegalMoveException{
         boolean corner = false;
-        for (int x = 0; x < GamePiece.SHAPE_GRID; x++){
-            for (int y = 0; y < GamePiece.SHAPE_GRID; y++){
-                int value = bp.getValue(x, y);
+        for (int x = 0; x < piece.getContainerSize(); x++){
+            for (int y = 0; y < piece.getContainerSize(); y++){
+                int value = piece.getValue(x, y);
                 boolean inBounds = isInBounds(x + xOffset, y + yOffset);
 
                 if(inBounds){
                     int gridValue = boardGrid[x + xOffset][y + yOffset];
+
                     if(gridValue != NONE){
-                        if (value == GamePiece.PIECE)
+                        if (value == GamePiece.PIECE_CELL)
                             throw new IllegalMoveException(OVERLAP_ERROR);
-                        if (gridValue == bp.getColor()){
-                            if (value == GamePiece.ADJACENT)
+                        if (gridValue == piece.getColor()){
+                            if (value == GamePiece.ADJACENT_CELL)
                                 throw new IllegalMoveException(ADJACENCY_ERROR);
-                            if (value == GamePiece.CORNER)
+                            if (value == GamePiece.CORNER_CELL)
                                 corner = true;
                         }
                     }
                     else{
-                        if(firstMove && value == GamePiece.PIECE && new Point(x + xOffset, y + yOffset).equals(getCorner(bp.getColor())))
+                        if(firstMove && value == GamePiece.PIECE_CELL && new Point(x + xOffset, y + yOffset).equals(getCorner(piece.getColor())))
                             corner = true;
-                        }
+                    }
                 }
                 else{
-                    if (value == GamePiece.PIECE) throw new IllegalMoveException(OFF_BOARD_ERROR);
+                    if (value == GamePiece.PIECE_CELL) throw new IllegalMoveException(OFF_BOARD_ERROR);
                 }
             }
         }
@@ -85,15 +91,15 @@ public class Board {
       return isValidMove(bp, xOffset, yOffset, false);
    }
 
-   public void placePiece(GamePiece bp, int xOff, int yOff, boolean firstMove) throws IllegalMoveException
+   public void placePiece(GamePiece piece, int xOff, int yOff, boolean firstMove) throws IllegalMoveException
    {
-      isValidMove(bp, xOff, yOff, firstMove);
+      isValidMove(piece, xOff, yOff, firstMove);
 
-      for (int x = 0; x < GamePiece.SHAPE_GRID; x++)
+      for (int x = 0; x < piece.getContainerSize(); x++)
       {
-         for (int y = 0; y < GamePiece.SHAPE_GRID; y++)
+         for (int y = 0; y < piece.getContainerSize(); y++)
          {
-            if (bp.getValue(x, y) == GamePiece.PIECE) boardGrid[x + xOff][y + yOff] = bp.getColor();
+            if (piece.getValue(x, y) == GamePiece.PIECE_CELL) boardGrid[x + xOff][y + yOff] = piece.getColor();
          }
       }
    }
@@ -108,17 +114,17 @@ public class Board {
       return new Point(pixel.x / (res / BOARD_SIZE), pixel.y / (res / BOARD_SIZE));
    }
 
-   public void overlay(GamePiece bp, int xOff, int yOff)
+   public void overlay(GamePiece piece, int xOff, int yOff)
    {
       initialize(boardOverlay);
 
-      for (int x = 0; x < GamePiece.SHAPE_GRID; x++)
+      for (int x = 0; x < piece.getContainerSize(); x++)
       {
-         for (int y = 0; y < GamePiece.SHAPE_GRID; y++)
+         for (int y = 0; y < piece.getContainerSize(); y++)
          {
-            if (isInBounds(x + xOff - GamePiece.SHAPE_GRID / 2, y + yOff - GamePiece.SHAPE_GRID / 2) && bp.getValue(x, y) == GamePiece.PIECE)
+            if (isInBounds(x + xOff - piece.getContainerSize() / 2, y + yOff - piece.getContainerSize() / 2) && piece.getValue(x, y) == GamePiece.PIECE_CELL)
             {
-               boardOverlay[x + xOff - GamePiece.SHAPE_GRID / 2][y + yOff - GamePiece.SHAPE_GRID / 2] = bp.getColor();
+               boardOverlay[x + xOff - piece.getContainerSize() / 2][y + yOff - piece.getContainerSize() / 2] = piece.getColor();
             }
          }
       }
@@ -145,7 +151,7 @@ public class Board {
                g.setColor(blend(g.getColor(), getColor(boardOverlay[x][y]), 0.1f));
              }
             g.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
-            g.setColor(GRID_LINE_COLOR);
+            g.setColor(GRID_COLOR);
             g.drawRect(x * cellSize, y * cellSize, cellSize, cellSize);
 
             if (boardGrid[x][y] == NONE)
@@ -193,9 +199,8 @@ public class Board {
         initialize(boardOverlay);
     }
 
-    private boolean isInBounds(int x, int y)
-    {
-    return (x >= 0 && y >= 0 && x < BOARD_SIZE && y < BOARD_SIZE);
+    private boolean isInBounds(int row, int col){
+        return (row >= 0 && col >= 0 && row < BOARD_SIZE && col < BOARD_SIZE);
     }
 
     private Point getCorner(int color){
