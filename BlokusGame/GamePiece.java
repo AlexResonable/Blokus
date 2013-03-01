@@ -16,7 +16,7 @@ public class GamePiece{
     public static final int POINT_WEIGHT = 5;
     public static final int NUMBER_OF_PIECES = 21;
     //public static final int DEFAULT_RESOLUTION = 120;
-    public static final int DEFAULT_RESOLUTION = 40;
+    public static final int PIECE_PREVIEW_RESOLUTION = 40;
 
     private int[][] shapeContainer;
     private int shapeColor;
@@ -83,7 +83,7 @@ public class GamePiece{
                 if (shapeContainer[row][col] == PIECE_CELL){
                     BasicStroke bs1 = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
                     //g.setStroke(bs1);
-                                        g.setPaint(new GradientPaint(0,0,Color.WHITE,100, 0,Color.GRAY));
+                    g.setPaint(new GradientPaint(0,0,Color.WHITE,100, 0,Color.GRAY));
                     g.setColor(Board.getColor(shapeColor));
 
                     
