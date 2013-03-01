@@ -4,6 +4,8 @@
  */
 package Blokus;
 
+
+import java.*;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -13,6 +15,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  *
@@ -97,7 +100,7 @@ public final class PreviewBoard implements ActionListener {
     
     public PreviewBoard(Board game){
         JButton myButtons[][] = game.getButtons();
-        Boolean myElements[][] = game.getElements();
+        int myElements[][] = game.getElements();
         int mySizeX = game.getSizeX();
         int mySizeY = game.getSizeY();
         for(int i=0; i < mySizeX; i++){
@@ -105,7 +108,7 @@ public final class PreviewBoard implements ActionListener {
                 myButtons[i][j] = new JButton("");
                 myButtons[i][j].setEnabled(false);
                 myButtons[i][j].setOpaque(true);
-                if(myElements[i][j] == true){
+                if(myElements[i][j] == 1){
                     myButtons[i][j].setBackground(Color.red);
                 }
             }

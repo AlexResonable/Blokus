@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package blokus;
+package Blokus;
 
 import javax.swing.JButton;
 
@@ -11,10 +11,47 @@ import javax.swing.JButton;
  * @author kamijean2
  */
 public class Board {
-    private int sizeX = 20;
-    private int sizeY = 20;
-    private Boolean elements[][] = new Boolean[sizeX][sizeY];
-    private JButton buttons[][] = new JButton[sizeX][sizeY];
+    private int sizeX=100;
+    private int sizeY=100;
+    private int turnTime = 10;
+    private int playerNumber = 4;
+    private int gameTime = 30;
+    private int pieceNumber = 21;
+    private int elements[][] = new int[getSizeX()][getSizeY()];
+    private JButton buttons[][] = new JButton[getSizeX()][getSizeY()];
+
+    
+    public int getGameTime() {
+        return gameTime;
+    }
+
+    public void setGameTime(int gameTime) {
+        this.gameTime = gameTime;
+    }
+
+    public int getPieceNumber() {
+        return pieceNumber;
+    }
+
+    public void setPieceNumber(int pieceNumber) {
+        this.pieceNumber = pieceNumber;
+    }
+
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    public int getTurnTime() {
+        return turnTime;
+    }
+
+    public void setTurnTime(int turnTime) {
+        this.turnTime = turnTime;
+    }
 
     public JButton[][] getButtons() {
         return buttons;
@@ -24,11 +61,11 @@ public class Board {
         this.buttons = buttons;
     }
 
-    public Boolean[][] getElements() {
+    public int[][] getElements() {
         return elements;
     }
 
-    public void setElements(Boolean[][] elements) {
+    public void setElements(int[][] elements) {
         this.elements = elements;
     }
     
@@ -36,22 +73,24 @@ public class Board {
         return sizeX;
     }
 
-    private void setSizeX(int sizeX) {
+    public void setSizeX(int sizeX) {
         this.sizeX = sizeX;
     }
     public int getSizeY() {
         return sizeY;
     }
 
-    private void setSizeY(int sizeY) {
+    public void setSizeY(int sizeY) {
         this.sizeY = sizeY;
     }
     
     public Board(){
+        this.setSizeX(20);
+        this.setSizeY(20);
         for(int i=0; i < sizeX; i++){
             for(int j=0; j < sizeY; j++){
                 buttons[i][j] = new JButton();
-                elements[i][j] = false;
+                elements[i][j] = 0;
             }
         }
     }
@@ -61,7 +100,7 @@ public class Board {
         for(int i=0; i < sizeX; i++){
             for(int j=0; j < sizeY; j++){
                 buttons[i][j] = new JButton("");
-                elements[i][j] = false;
+                elements[i][j] = 0;
             }
         }
     }

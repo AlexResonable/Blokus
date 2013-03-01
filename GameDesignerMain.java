@@ -103,14 +103,15 @@ public class GameDesignerMain implements ActionListener{
         else if(ae.getSource() == newGame){
             //open new game window
             window.setVisible(false);
-            ModifyGameDesign game2 = new ModifyGameDesign();
+            ModifyGameDesign game2 = new ModifyGameDesign(new Board());
             game2.run();
         }
         else if(ae.getSource() == game1Edit){
             //open edit new game window
             //pull info from database
             window.setVisible(false);
-            ModifyGameDesign game2 = new ModifyGameDesign();
+            //get board from database
+            ModifyGameDesign game2 = new ModifyGameDesign(new Board());
             game2.run();
         }
         else if(ae.getSource() == game1Delete){
