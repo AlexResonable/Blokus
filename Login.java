@@ -39,7 +39,7 @@ public class Login implements ActionListener {
     private JFrame window = new JFrame("System Login");
     private JPanel contentPane = (JPanel)window.getContentPane(); 
     
-    public void login(){
+    public void run(){
         this.createLogin();
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     
