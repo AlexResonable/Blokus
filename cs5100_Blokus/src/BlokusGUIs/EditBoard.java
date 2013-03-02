@@ -220,18 +220,18 @@ public final class EditBoard implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == backGame){
             //go back
-            this.window.setVisible(false);
+            this.window.dispose();//setVisible(false);
             ModifyGameDesign game = new ModifyGameDesign(eBoard);
             game.run();
         }
         else if(ae.getSource() == saveGame){
             //save game
-            this.window.setVisible(false);
+            //this.window.setVisible(false);
             JOptionPane.showMessageDialog(null, "Game Board has been Saved!");
             //save board to database
             //game.setElement = this.elements;
-            ModifyGameDesign game = new ModifyGameDesign(eBoard);
-            game.run();
+           // ModifyGameDesign game = new ModifyGameDesign(eBoard);
+           // game.run();
         }
         else{
             for(int i = 0; i < getSizeX(); i++){

@@ -97,19 +97,22 @@ public class GameDesignerMain implements ActionListener{
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == logout){
             //logout user and take to main menu
-            window.setVisible(false);
-            MainMenu.createAndShowGUI();
+            window.dispose();//setVisible(false);
+            Login lg = new Login();
+            lg.run();
+            //MainMenu.createAndShowGUI();
         }
         else if(ae.getSource() == newGame){
             //open new game window
-            window.setVisible(false);
+            window.dispose();//setVisible(false);
             ModifyGameDesign game2 = new ModifyGameDesign(new setBoard());
             game2.run();
         }
         else if(ae.getSource() == game1Edit){
             //open edit new game window
             //pull info from database
-            window.setVisible(false);
+   
+            window.dispose();//setVisible(false);
             //get board from database
             ModifyGameDesign game2 = new ModifyGameDesign(new setBoard());
             game2.run();

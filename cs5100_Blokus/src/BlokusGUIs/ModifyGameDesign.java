@@ -226,18 +226,20 @@ public class ModifyGameDesign implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == logout){
             //logout and send to main menu
-            window.setVisible(false);
-            MainMenu.createAndShowGUI(); 
+            window.dispose();//setVisible(false);
+            Login lg = new Login();
+            lg.run();
+            
         }
         else if(ae.getSource() == backButton){
             //take back to main menu screen
-            window.setVisible(false);
+            window.dispose();//setVisible(false);
             GameDesignerMain game = new GameDesignerMain();
             game.run();
         }
         else if(ae.getSource() == boardButton){
             //take to board where you can edit which squares are blocked
-            window.setVisible(false);
+            window.dispose();//setVisible(false);
             board = new setBoard((Integer)size1.getValue(), (Integer)size2.getValue());
             board.setGameTime((Integer)gameTime.getValue());
             board.setPieceNumber((Integer)pieces.getValue());
@@ -248,10 +250,10 @@ public class ModifyGameDesign implements ActionListener {
         }
         else if(ae.getSource() == saveButton){
             //save board to database and then take back to menu with it added to the GUI
-            window.setVisible(false);
+          //  window.dispose();//setVisible(false);
             JOptionPane.showMessageDialog(null, "Game Board Options have been Saved!");
-            GameDesignerMain game = new GameDesignerMain();
-            game.run();
+          //  GameDesignerMain game = new GameDesignerMain();
+         //   game.run();
         }
     }
     

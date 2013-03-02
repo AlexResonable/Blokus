@@ -4,38 +4,46 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.awt.*;
+import java.util.TimerTask;
+import javax.swing.ImageIcon;
+
 
 public class BlokusGame{
     public static final int NUM_PLAYERS = 4;
-    
+    static int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+	static int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+	static BlokusFrame bf;
     public BlokusGame()
     {
-    	BlokusFrame bf = new BlokusFrame();
+    	bf = new BlokusFrame();
+    	bf.setLocation((screenWidth -bf.getWidth())/2,(screenHeight-bf.getHeight())/2);
     }
-
+    
     public static class BlokusFrame extends JFrame{
-    	static int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
-    	static int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
         private Board board;
         private Player[] players;
         private int turn = -1;
 
         private int pieceIndex;
-        private int pieceIndex2;
-        private int pieceIndex3;
-        private int pieceIndex4;
         private Point selected;
 
         private JPanel mainPanel;
+        private JPanel topPanel;
+        private JPanel botPanel;
         private JPanel leftSidePanel;
         private JPanel rightSidePanel;
         private JPanel topSidePanel;
         private JPanel bottomSidePanel;
 
-        private JPanel piecesPanel1;
-        private JPanel piecesPanel2;
-        private JPanel piecesPanel3;
-        private JPanel piecesPanel4;
+        private JPanel currentPlayerPiecesPanel;
+        private JPanel showPiecePanel;
+        private JPanel player1PiecesPanel;
+        private JPanel player2PiecesPanel;
+        private JPanel player3PiecesPanel;
+        private JPanel player4PiecesPanel;
+
+        private JPanel turnTimePanel;
+        private JPanel gameTimePanel;
 
         private JLabel player1;
         private JLabel player2;
@@ -44,26 +52,69 @@ public class BlokusGame{
 
         private JPanel boardPanel;
         private JLabel label;
+        private JLabel turnTimerLabel;
+        private JLabel gameTimerLabel;
+        private JLabel gameInfoLabel;
+
+        private JLabel blokusLogo;
         private ImageIcon boardImage;
-        private JButton surrender;
-        private JFrame fm;
+        private JButton surrenderButton;
+
+        private int turnTimeLimit;
+        private int gameTimeLimit;
+        private int turnTimeInSeconds;
+
+        private BlokusTimer turnTimer;
+        private BlokusTimer gameTimer;
 
         public BlokusFrame(){
             super("Blokus");
-            fm = this;
-            this.setLocation((screenWidth -800)/2,(screenHeight-800)/2);
-            this.setSize(1000, 1000);
-           this.setLayout(new BorderLayout());
+            this.setLayout(new BorderLayout());
             board = new Board();
             players = new Player[NUM_PLAYERS];
             players[0] = new Player(Board.BLUE);
             players[1] = new Player(Board.RED);
-            players[2] = new Player(Board.YELLOW);
+            players[2] = new Player(Board.ORANGE);
             players[3] = new Player(Board.GREEN);
+
+            turnTimeLimit = 10;
+            gameTimeLimit = 62;
+            turnTimeInSeconds = 1;
 
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             initializeGUI();
             startNewTurn();
+        }
+        
+        public BlokusFrame(int turnTime, int gameTime){
+            
+        }
+        
+        
+
+        class TurnOver extends TimerTask {
+            public void run() {
+                turnTimerLabel.setText( Integer.toString(turnTimeLimit - (turnTimeInSeconds % turnTimeLimit)));
+                if(turnTimeInSeconds % turnTimeLimit == 0){
+                    startNewTurn();
+                    gameInfoLabel.setText("TURN " + Integer.toString(turn));
+                }
+                turnTimeInSeconds++;
+            }
+        }
+
+        class GameOver extends TimerTask {
+            public void run() {
+                gameTimeLimit--;
+                int min = gameTimeLimit / 60;
+                int sec = (gameTimeLimit % 60);
+                String strMsg = String.format("%02d:%02d",min,sec);
+                gameTimerLabel.setText(strMsg);
+                if(gameTimeLimit == 0){
+                    gameOver();
+                }
+                
+            }
         }
 
         private void initializeGUI(){
@@ -77,14 +128,17 @@ public class BlokusGame{
                             board.placePiece(players[turn].pieces.get(
                             pieceIndex), selected.x - GamePiece.SHAPE_CONTAINER_SIZE / 2,
                             selected.y - GamePiece.SHAPE_CONTAINER_SIZE / 2, players[turn].firstMove);
+
                             drawBoard();
-                            players[turn].pieces.remove(pieceIndex);
+                            players[turn].pieces.get(pieceIndex).setToUsed();
                             players[turn].firstMove = false;
                             players[turn].canPlay = players[turn].pieces.size() != 0;
+                            turnTimeInSeconds = 1;
+                            turnTimerLabel.setText(Integer.toString(turnTimeLimit));
                             startNewTurn();
                         }
                         catch (Board.IllegalMoveException ex){
-                            displayMessage(ex.getMessage(), "Illegal Move!");
+                            //displayMessage(ex.getMessage(), "Illegal Move!");
                         }
                     }
                 }
@@ -131,50 +185,65 @@ public class BlokusGame{
             }
 
             mainPanel = new JPanel();
+            currentPlayerPiecesPanel = new JPanel();
+            botPanel = new JPanel();
+            topPanel = new JPanel();
 
-            piecesPanel1 = new JPanel();
-            piecesPanel1.setLayout(new BoxLayout(piecesPanel1, BoxLayout.PAGE_AXIS));
+            botPanel.setLayout(new BoxLayout(botPanel, BoxLayout.PAGE_AXIS));
+            topPanel.setLayout(new FlowLayout());
+            currentPlayerPiecesPanel.setLayout(new BoxLayout(currentPlayerPiecesPanel, BoxLayout.PAGE_AXIS));
 
-            piecesPanel2 = new JPanel();
-            piecesPanel2.setLayout(new BoxLayout(piecesPanel2, BoxLayout.PAGE_AXIS));
+            player1PiecesPanel = new JPanel();
+            player1PiecesPanel.setLayout(new BoxLayout(player1PiecesPanel, BoxLayout.LINE_AXIS));
 
-            piecesPanel3 = new JPanel();
-            piecesPanel3.setLayout(new BoxLayout(piecesPanel3, BoxLayout.LINE_AXIS));
+            player2PiecesPanel = new JPanel();
+            player2PiecesPanel.setLayout(new BoxLayout(player2PiecesPanel, BoxLayout.LINE_AXIS));
 
-            piecesPanel4 = new JPanel();
-            piecesPanel4.setLayout(new BoxLayout(piecesPanel4, BoxLayout.LINE_AXIS));
+            player3PiecesPanel = new JPanel();
+            player3PiecesPanel.setLayout(new BoxLayout(player3PiecesPanel, BoxLayout.LINE_AXIS));
 
-            JScrollPane jsp1 = new JScrollPane(piecesPanel1);
-            jsp1.getVerticalScrollBar().setUnitIncrement(GamePiece.DEFAULT_RESOLUTION / 3);
-            jsp1.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION - 80, Board.DEFAULT_RESOLUTION - 30));
+            player4PiecesPanel = new JPanel();
+            player4PiecesPanel.setLayout(new BoxLayout(player4PiecesPanel, BoxLayout.LINE_AXIS));
 
-            JScrollPane jsp2 = new JScrollPane(piecesPanel2);
-            jsp2.getVerticalScrollBar().setUnitIncrement(GamePiece.DEFAULT_RESOLUTION / 3);
-            jsp2.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION - 80, Board.DEFAULT_RESOLUTION - 30));
+            JScrollPane jsp = new JScrollPane(currentPlayerPiecesPanel);
+            jsp.getVerticalScrollBar().setUnitIncrement(120 / 3);
+            jsp.setPreferredSize(new Dimension(40, 90));
 
-            JScrollPane jsp3 = new JScrollPane(piecesPanel3);
-            jsp3.getVerticalScrollBar().setUnitIncrement(GamePiece.DEFAULT_RESOLUTION / 3);
-            jsp3.setPreferredSize(new Dimension(Board.DEFAULT_RESOLUTION - 30,GamePiece.DEFAULT_RESOLUTION - 80));
+            JScrollPane jsp1 = new JScrollPane(player1PiecesPanel);
+            jsp1.getVerticalScrollBar().setUnitIncrement(GamePiece.PIECE_PREVIEW_RESOLUTION / 3);
+            jsp1.setPreferredSize(new Dimension(GamePiece.PIECE_PREVIEW_RESOLUTION - 80, Board.DEFAULT_RESOLUTION - 30));
 
-            JScrollPane jsp4 = new JScrollPane(piecesPanel4);
-            jsp4.getVerticalScrollBar().setUnitIncrement(GamePiece.DEFAULT_RESOLUTION / 3);
-            jsp4.setPreferredSize(new Dimension(Board.DEFAULT_RESOLUTION - 30,GamePiece.DEFAULT_RESOLUTION - 80));
+            JScrollPane jsp2 = new JScrollPane(player2PiecesPanel);
+            jsp2.getVerticalScrollBar().setUnitIncrement(GamePiece.PIECE_PREVIEW_RESOLUTION / 3);
+            jsp2.setPreferredSize(new Dimension(GamePiece.PIECE_PREVIEW_RESOLUTION - 80, Board.DEFAULT_RESOLUTION - 30));
+
+            JScrollPane jsp3 = new JScrollPane(player3PiecesPanel);
+            jsp3.getVerticalScrollBar().setUnitIncrement(GamePiece.PIECE_PREVIEW_RESOLUTION / 3);
+            jsp3.setPreferredSize(new Dimension(Board.DEFAULT_RESOLUTION - 30,GamePiece.PIECE_PREVIEW_RESOLUTION - 80));
+
+            JScrollPane jsp4 = new JScrollPane(player4PiecesPanel);
+            jsp4.getVerticalScrollBar().setUnitIncrement(GamePiece.PIECE_PREVIEW_RESOLUTION / 3);
+            jsp4.setPreferredSize(new Dimension(Board.DEFAULT_RESOLUTION - 30,GamePiece.PIECE_PREVIEW_RESOLUTION - 80));
+
+            showPiecePanel = new JPanel();
+            showPiecePanel.setLayout(new BoxLayout(showPiecePanel, BoxLayout.PAGE_AXIS));
+            
 
             player1 = new JLabel("Player1");
-            player1.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION, 30));
+            player1.setPreferredSize(new Dimension(GamePiece.PIECE_PREVIEW_RESOLUTION, 30));
 
             player2 = new JLabel("Player2");
-            player2.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION, 30));
+            player2.setPreferredSize(new Dimension(GamePiece.PIECE_PREVIEW_RESOLUTION, 30));
 
             player3 = new JLabel("Player3");
-            player3.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION, 30));
+            player3.setPreferredSize(new Dimension(GamePiece.PIECE_PREVIEW_RESOLUTION, 30));
 
             player4 = new JLabel("Player4");
-            player4.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION, 30));
+            player4.setPreferredSize(new Dimension(GamePiece.PIECE_PREVIEW_RESOLUTION, 30));
 
-            surrender = new JButton("Surrender");
-            surrender.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION, 30));
-            surrender.addActionListener(new SurrenderListener());
+            surrenderButton = new JButton("Give Up");
+            surrenderButton.setPreferredSize(new Dimension(120, 30));
+            surrenderButton.addActionListener(new SurrenderListener());
 
             leftSidePanel = new JPanel();
             leftSidePanel.setLayout(new BoxLayout(leftSidePanel, BoxLayout.PAGE_AXIS));
@@ -200,58 +269,77 @@ public class BlokusGame{
             label.addMouseWheelListener(bcl);
 
             boardPanel.add(label);
-
-            leftSidePanel.add(jsp1);
-            rightSidePanel.add(jsp2);
-            topSidePanel.add(jsp3);
-            bottomSidePanel.add(jsp4);
-
             
-           leftSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
-           rightSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
-           topSidePanel.setPreferredSize(new Dimension(520,GamePiece.DEFAULT_RESOLUTION+20));
-           bottomSidePanel.setPreferredSize(new Dimension(520,GamePiece.DEFAULT_RESOLUTION+20));
+            leftSidePanel.add(player1PiecesPanel);
+            rightSidePanel.add(player2PiecesPanel);
+            topSidePanel.add(player3PiecesPanel);
+            bottomSidePanel.add(player4PiecesPanel);
+            
+            JButton   b4 = new JButton("Quit");
+       		b4.setFont(new Font("Bodoni MT Black", Font.BOLD, 22));
+       		b4.setBackground(Color.white);
+       		b4.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+       		b4.addActionListener(new ActionListener(){
+       			public void actionPerformed(ActionEvent e)
+       			{
+       				bf.dispose();
+       				MainMenu mm = new MainMenu();
+       				mm.createAndShowGUI();
+       			}
+       			
+       		});
 
-            //leftSidePanel.add(player1);
-            //rightSidePanel.add(player2);
-            //topSidePanel.add(player3);
-            //bottomSidePanel.add(player4);
+            gameTimerLabel = new JLabel("GAME TIME:");
+            turnTimerLabel = new JLabel("TURN TIME:");
+            gameTimerLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+            turnTimerLabel.setFont(new Font("Serif", Font.PLAIN, 30));
+            gameInfoLabel = new JLabel("GAME INFORMATION GOES HERE.");
+
+            gameTimePanel = new JPanel();
+            turnTimePanel = new JPanel();
+            gameTimePanel.setLayout(new BorderLayout());
+            turnTimePanel.setLayout(new BorderLayout());
+            
+            turnTimePanel.add(new JLabel("Turn Time:"),BorderLayout.PAGE_START);
+            turnTimePanel.add(turnTimerLabel,BorderLayout.CENTER);
+            
+
+            gameTimePanel.add(new JLabel("Game Time:"),BorderLayout.PAGE_START);
+            gameTimePanel.add(gameTimerLabel,BorderLayout.CENTER);
            
-          JButton   b4 = new JButton("Quit");
-   		b4.setFont(new Font("Bodoni MT Black", Font.BOLD, 22));
-   		b4.setBackground(Color.white);
-   		b4.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
-   		b4.addActionListener(new ActionListener(){
-   			public void actionPerformed(ActionEvent e)
-   			{
-   				fm.dispose();
-   				MainMenu mm = new MainMenu();
-   				mm.createAndShowGUI();
-   			}
-   			
-   		});
-    		
+
+            botPanel.add(gameInfoLabel);
+            botPanel.add(leftSidePanel);
+            botPanel.add(rightSidePanel);
+            botPanel.add(topSidePanel);
+            botPanel.add(bottomSidePanel);
+            
+         
+          
+            topPanel.add(turnTimePanel);
+           
+            topPanel.add(gameTimePanel);
+            topPanel.add(Box.createHorizontalStrut(100));
+            topPanel.add(b4);
+          
+            showPiecePanel.add(jsp);
+            showPiecePanel.add(surrenderButton);
+
+
             mainPanel.setLayout(new BorderLayout());
-            
-           
-            mainPanel.add(leftSidePanel,BorderLayout.LINE_START);
-           
-            mainPanel.add(rightSidePanel,BorderLayout.LINE_END);
-           
+
+            mainPanel.add(topPanel,BorderLayout.PAGE_START);
+            mainPanel.add(showPiecePanel,BorderLayout.LINE_END);
             mainPanel.add(boardPanel,BorderLayout.CENTER);
-           
-            
-            mainPanel.add(topSidePanel,BorderLayout.PAGE_START);
-           
-            mainPanel.add(bottomSidePanel,BorderLayout.PAGE_END);
-           
-            
-            
-            getContentPane().add(mainPanel, BorderLayout.PAGE_START);
-           // mainPanel.setBounds(0,0,800, 800);
-            getContentPane().add(b4,BorderLayout.PAGE_END );
-           // pack();
+            mainPanel.add(botPanel,BorderLayout.PAGE_END);
+
+
+            getContentPane().add(mainPanel);
+           // add(b4, BorderLayout.PAGE_END);
+          //  pack();
             setVisible(true);
+            turnTimer = new BlokusTimer(new TurnOver());
+            gameTimer = new BlokusTimer(new GameOver());
         }
 
         private void rotateClockwise(){
@@ -278,31 +366,13 @@ public class BlokusGame{
         }
 
         private void drawBorder(){
-            JComponent piece1 = (JComponent) piecesPanel1.getComponent(pieceIndex);
-            piece1.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-
-            JComponent piece2 = (JComponent) piecesPanel2.getComponent(pieceIndex);
-            piece2.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-
-            JComponent piece3 = (JComponent) piecesPanel3.getComponent(pieceIndex);
-            piece3.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-
-            JComponent piece4 = (JComponent) piecesPanel4.getComponent(pieceIndex);
-            piece4.setBorder(BorderFactory.createLineBorder(Color.GREEN));
+            JComponent piece = (JComponent) currentPlayerPiecesPanel.getComponent(pieceIndex);
+            piece.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         }
 
         private void clearBorder(){
-            JComponent piece1 = (JComponent) piecesPanel1.getComponent(pieceIndex);
-            piece1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
-            JComponent piece2 = (JComponent) piecesPanel2.getComponent(pieceIndex);
-            piece1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
-            JComponent piece3 = (JComponent) piecesPanel3.getComponent(pieceIndex);
-            piece3.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-
-            JComponent piece4 = (JComponent) piecesPanel4.getComponent(pieceIndex);
-            piece4.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+            JComponent piece = (JComponent) currentPlayerPiecesPanel.getComponent(pieceIndex);
+            piece.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         }
 
         private void displayMessage(String message, String title){
@@ -340,52 +410,60 @@ public class BlokusGame{
                 return;
             }
 
-            piecesPanel1.removeAll();            
+            currentPlayerPiecesPanel.removeAll();
+
+            for (int i = 0; i < players[turn].pieces.size(); i++){
+                if(!players[turn].pieces.get(i).isPieceUsed()){
+                    BlokusPieceLabel pieceLabel =
+                    new BlokusPieceLabel(i, players[turn].pieces.get(i), 120);
+                    pieceLabel.addMouseListener(new PieceLabelClickListener());
+                    pieceLabel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
+                    currentPlayerPiecesPanel.add(pieceLabel);
+                }
+            }
+
+            player1PiecesPanel.removeAll();
             for (int i = 0; i < players[3].pieces.size(); i++){
                 BlokusPieceLabel pieceLabel3 =
-                new BlokusPieceLabel(i, players[3].pieces.get(i), GamePiece.DEFAULT_RESOLUTION);
-                pieceLabel3.addMouseListener(new PieceLabelClickListener());
+                new BlokusPieceLabel(i, players[3].pieces.get(i), GamePiece.PIECE_PREVIEW_RESOLUTION);
                 pieceLabel3.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-                piecesPanel1.add(pieceLabel3);
+                player1PiecesPanel.add(pieceLabel3);
             }
 
-            piecesPanel2.removeAll();
+            player2PiecesPanel.removeAll();
             for (int i = 0; i < players[2].pieces.size(); i++){
                 BlokusPieceLabel pieceLabel2 =
-                new BlokusPieceLabel(i, players[2].pieces.get(i), GamePiece.DEFAULT_RESOLUTION);
-                pieceLabel2.addMouseListener(new PieceLabelClickListener());
+                new BlokusPieceLabel(i, players[2].pieces.get(i), GamePiece.PIECE_PREVIEW_RESOLUTION);
                 pieceLabel2.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-                piecesPanel2.add(pieceLabel2);
+                player2PiecesPanel.add(pieceLabel2);
             }
 
-            piecesPanel3.removeAll();
+            player3PiecesPanel.removeAll();
             for (int i = 0; i < players[1].pieces.size(); i++){
                 BlokusPieceLabel pieceLabel1 =
-                new BlokusPieceLabel(i, players[1].pieces.get(i), GamePiece.DEFAULT_RESOLUTION);
-                pieceLabel1.addMouseListener(new PieceLabelClickListener());
+                new BlokusPieceLabel(i, players[1].pieces.get(i), GamePiece.PIECE_PREVIEW_RESOLUTION);
                 pieceLabel1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-                piecesPanel3.add(pieceLabel1);
+                player3PiecesPanel.add(pieceLabel1);
             }
 
-            piecesPanel4.removeAll();
+            player4PiecesPanel.removeAll();
             for (int i = 0; i < players[0].pieces.size(); i++){
                 BlokusPieceLabel pieceLabel0 =
-                new BlokusPieceLabel(i, players[0].pieces.get(i), GamePiece.DEFAULT_RESOLUTION);
-                pieceLabel0.addMouseListener(new PieceLabelClickListener());
+                new BlokusPieceLabel(i, players[0].pieces.get(i), GamePiece.PIECE_PREVIEW_RESOLUTION);
                 pieceLabel0.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-                piecesPanel4.add(pieceLabel0);
+                pieceLabel0.setBackground(Color.BLACK);
+                player4PiecesPanel.add(pieceLabel0);
             }
 
             pieceIndex = 0;
-            pieceIndex2 = 0;
-            pieceIndex3 = 0;
-            pieceIndex4 = 0;
 
             drawBorder();
-            piecesPanel1.repaint();
-            piecesPanel2.repaint();
-            piecesPanel3.repaint();
-            piecesPanel4.repaint();
+            player1PiecesPanel.repaint();
+            player2PiecesPanel.repaint();
+            player3PiecesPanel.repaint();
+            player4PiecesPanel.repaint();
+            currentPlayerPiecesPanel.repaint();
+
             pack();
         }
 
@@ -396,8 +474,9 @@ public class BlokusGame{
             return true;
         }
 
-        private void gameOver()
-        {
+        private void gameOver(){
+            turnTimer.stopTimer();
+            gameTimer.stopTimer();
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < NUM_PLAYERS; i++){
                 sb.append(Board.getColorName(getPlayerColor(i)));
@@ -413,7 +492,7 @@ public class BlokusGame{
             switch (index){
                 case 0: return Board.BLUE;
                 case 1: return Board.RED;
-                case 2: return Board.YELLOW;
+                case 2: return Board.ORANGE;
                 case 3: return Board.GREEN;
                 default: return 0;
             }
@@ -423,13 +502,11 @@ public class BlokusGame{
     public static class BlokusPieceLabel extends JLabel{
         public int pieceIndex;
 
-        public BlokusPieceLabel(int pieceIndex, GamePiece bp, int size){
-            super(new ImageIcon(bp.render(size)));
+        public BlokusPieceLabel(int pieceIndex, GamePiece gamePiece, int size){
+            super(new ImageIcon(gamePiece.render(size)));
             this.pieceIndex = pieceIndex;
         }
     }
 
-  /*  public static void main(String[] args){
-        BlokusFrame bf = new BlokusFrame();
-    }*/
+   
 }

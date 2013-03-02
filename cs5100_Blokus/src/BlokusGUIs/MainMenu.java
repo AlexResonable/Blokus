@@ -47,13 +47,13 @@ public class MainMenu extends JPanel
 		copyRight = new JLabel();
 		copyRight.setFont(new Font("AR DECODE",Font.BOLD, 24));
 		copyRight.setText("by The Dream Team");
-		
+		/*
 		gameIcon = new JLabel();
 		gameIcon.setHorizontalAlignment(JLabel.CENTER);
 		gameIcon.setPreferredSize(new Dimension(200, 177));
 		gameIcon.setBorder(BorderFactory.createEmptyBorder(0,0,0,0));
 		ImageIcon icon = createImageIcon("Blockus_Img/MainIcon.png");
-		gameIcon.setIcon(icon);
+		gameIcon.setIcon(icon);*/
 		
 		
 		b1 = new JButton("PLAY");
@@ -64,6 +64,7 @@ public class MainMenu extends JPanel
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
 				BlokusGame bg = new BlokusGame();
+				
 				
 		}
 		});
@@ -151,8 +152,8 @@ public class MainMenu extends JPanel
 		copyRight.setBounds(300, 120, 200, 100);
 		add(buttonPanel);
 		buttonPanel.setBounds(300,230,300,318);
-		add(gameIcon);
-		gameIcon.setBounds(210, 580, 356,141);
+	//	add(gameIcon);
+		//gameIcon.setBounds(210, 580, 356,141);
 		
 		
 	}

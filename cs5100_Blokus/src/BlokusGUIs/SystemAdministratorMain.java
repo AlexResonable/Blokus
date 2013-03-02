@@ -69,8 +69,8 @@ public class SystemAdministratorMain extends JPanel
 		b3.addActionListener(new ActionListener(){
 			public void actionPerformed (ActionEvent e){
 				frame.dispose();
-				MainMenu mm = new MainMenu();
-				mm.createAndShowGUI();
+				Login lg = new Login();
+				lg.run();
 			}
 		});
 		

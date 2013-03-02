@@ -117,6 +117,7 @@ public class Login implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == backButton){
             //call menu
+        	window.dispose();
             MainMenu.createAndShowGUI();
         }
         else if(ae.getSource() == loginButton){
@@ -126,12 +127,12 @@ public class Login implements ActionListener {
                 errorField.setText("<HTML><FONT COLOR = Red>Username and password must be valid</FONT></HTML>");
             }
             else if(username.equals(sysAdmin) && Arrays.equals(password, pass)){
-                window.setVisible(false);
+                window.dispose();//setVisible(false);
                 SystemAdministratorMain SAmain = new SystemAdministratorMain();
                 SAmain.ShowSystemAdministratorGUI();
             }
             else if(username.equals(designerAdmin) && Arrays.equals(password, pass)){
-                window.setVisible(false);
+                window.dispose();//setVisible(false);
                 GameDesignerMain game = new GameDesignerMain();
                 game.run();
             }
