@@ -13,8 +13,10 @@ public class BlokusGame{
     static int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
 	static int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
 	static BlokusFrame bf;
+	BlokusGame bg;
     public BlokusGame()
     {
+    	bg = this;
     	bf = new BlokusFrame();
     	bf.setLocation((screenWidth -bf.getWidth())/2,(screenHeight-bf.getHeight())/2);
     }
@@ -282,7 +284,9 @@ public class BlokusGame{
        		b4.addActionListener(new ActionListener(){
        			public void actionPerformed(ActionEvent e)
        			{
+       				bf.gameOver();
        				bf.dispose();
+       				
        				MainMenu mm = new MainMenu();
        				mm.createAndShowGUI();
        			}
@@ -485,7 +489,8 @@ public class BlokusGame{
                 sb.append("\n");
             }
             JOptionPane.showMessageDialog(this, sb.toString(), "Game Over", JOptionPane.INFORMATION_MESSAGE );
-            System.exit(0);
+            
+            //System.exit(0);
         }
 
         private int getPlayerColor(int index){
