@@ -1,14 +1,30 @@
-package blokusgame;
+package blokusGame;
 
+import blokus5100.MainMenu;
+import blokus.Player;
+import blokus.Board;
+import blokus.BlokusTimer;
+import blokus.GamePiece;
 import javax.swing.*;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.TimerTask;
 import javax.swing.ImageIcon;
 
+
 public class BlokusGame{
     public static final int NUM_PLAYERS = 4;
-
+    static int screenWidth = Toolkit.getDefaultToolkit().getScreenSize().width;
+	static int screenHeight = Toolkit.getDefaultToolkit().getScreenSize().height;
+	static BlokusFrame bf;
+	BlokusGame bg;
+    public BlokusGame()
+    {
+    	bg = this;
+    	bf = new BlokusFrame();
+    	bf.setLocation((screenWidth -bf.getWidth())/2,(screenHeight-bf.getHeight())/2);
+    }
+    
     public static class BlokusFrame extends JFrame{
         private Board board;
         private Player[] players;
@@ -53,13 +69,13 @@ public class BlokusGame{
         private int turnTimeLimit;
         private int gameTimeLimit;
         private int turnTimeInSeconds;
-        private int gameTimeInSeconds;
 
         private BlokusTimer turnTimer;
         private BlokusTimer gameTimer;
 
         public BlokusFrame(){
             super("Blokus");
+            this.setLayout(new BorderLayout());
             board = new Board();
             players = new Player[NUM_PLAYERS];
             players[0] = new Player(Board.BLUE);
@@ -67,26 +83,27 @@ public class BlokusGame{
             players[2] = new Player(Board.ORANGE);
             players[3] = new Player(Board.GREEN);
 
-            turnTimeLimit = 5;
-            gameTimeLimit = 1800;
+            turnTimeLimit = 10;
+            gameTimeLimit = 62;
             turnTimeInSeconds = 1;
-            gameTimeInSeconds = 1;
 
             setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             initializeGUI();
             startNewTurn();
         }
+        
+        public BlokusFrame(int turnTime, int gameTime){
+            
+        }
+        
+        
 
         class TurnOver extends TimerTask {
             public void run() {
-//                turnTimerLabel.setText("Turn time left: " + Integer.toString(turnTimeLimit - (turnTimeInSeconds % turnTimeLimit)));
                 turnTimerLabel.setText( Integer.toString(turnTimeLimit - (turnTimeInSeconds % turnTimeLimit)));
                 if(turnTimeInSeconds % turnTimeLimit == 0){
-                   // System.out.println("Time's up!");
-                    if(true){
-                    }
-                    else{
-                    }
+                    startNewTurn();
+                    gameInfoLabel.setText("TURN " + Integer.toString(turn));
                 }
                 turnTimeInSeconds++;
             }
@@ -94,15 +111,15 @@ public class BlokusGame{
 
         class GameOver extends TimerTask {
             public void run() {
-//                gameTimerLabel.setText("Game time left: " + Integer.toString(gameTimeLimit - (gameTimeInSeconds % gameTimeLimit)));
-                gameTimerLabel.setText(Integer.toString(gameTimeLimit - (gameTimeInSeconds % gameTimeLimit)));
-                if(gameTimeInSeconds % gameTimeLimit == 0){
-                    if(true){
-                    }
-                    else{
-                    }
+                gameTimeLimit--;
+                int min = gameTimeLimit / 60;
+                int sec = (gameTimeLimit % 60);
+                String strMsg = String.format("%02d:%02d",min,sec);
+                gameTimerLabel.setText(strMsg);
+                if(gameTimeLimit == 0){
+                    gameOver();
                 }
-                gameTimeInSeconds++;
+                
             }
         }
 
@@ -120,11 +137,9 @@ public class BlokusGame{
 
                             drawBoard();
                             players[turn].pieces.get(pieceIndex).setToUsed();
-                            //players[turn].pieces.remove(pieceIndex);
                             players[turn].firstMove = false;
                             players[turn].canPlay = players[turn].pieces.size() != 0;
                             turnTimeInSeconds = 1;
-                            //turnTimerLabel.setText("Time left: "+Integer.toString(turnTimeLimit));
                             turnTimerLabel.setText(Integer.toString(turnTimeLimit));
                             startNewTurn();
                         }
@@ -181,7 +196,6 @@ public class BlokusGame{
             topPanel = new JPanel();
 
             botPanel.setLayout(new BoxLayout(botPanel, BoxLayout.PAGE_AXIS));
-            //topPanel.setLayout(new BoxLayout(topPanel, BoxLayout.PAGE_AXIS));
             topPanel.setLayout(new FlowLayout());
             currentPlayerPiecesPanel.setLayout(new BoxLayout(currentPlayerPiecesPanel, BoxLayout.PAGE_AXIS));
 
@@ -196,9 +210,6 @@ public class BlokusGame{
 
             player4PiecesPanel = new JPanel();
             player4PiecesPanel.setLayout(new BoxLayout(player4PiecesPanel, BoxLayout.LINE_AXIS));
-
-
-
 
             JScrollPane jsp = new JScrollPane(currentPlayerPiecesPanel);
             jsp.getVerticalScrollBar().setUnitIncrement(120 / 3);
@@ -236,7 +247,7 @@ public class BlokusGame{
             player4 = new JLabel("Player4");
             player4.setPreferredSize(new Dimension(GamePiece.PIECE_PREVIEW_RESOLUTION, 30));
 
-            surrenderButton = new JButton("Surrender");
+            surrenderButton = new JButton("Give Up");
             surrenderButton.setPreferredSize(new Dimension(120, 30));
             surrenderButton.addActionListener(new SurrenderListener());
 
@@ -264,29 +275,27 @@ public class BlokusGame{
             label.addMouseWheelListener(bcl);
 
             boardPanel.add(label);
-
-//            leftSidePanel.add(jsp1);
-//            rightSidePanel.add(jsp2);
-//            topSidePanel.add(jsp3);
-//            bottomSidePanel.add(jsp4);
-
+            
             leftSidePanel.add(player1PiecesPanel);
             rightSidePanel.add(player2PiecesPanel);
             topSidePanel.add(player3PiecesPanel);
             bottomSidePanel.add(player4PiecesPanel);
             
-//            leftSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
-//            rightSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
-//
-//            topSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
-//            bottomSidePanel.setPreferredSize(new Dimension(GamePiece.DEFAULT_RESOLUTION+20,520));
-//            topSidePanel.setPreferredSize(new Dimension(520,GamePiece.DEFAULT_RESOLUTION+20));
-//            bottomSidePanel.setPreferredSize(new Dimension(520,GamePiece.DEFAULT_RESOLUTION+20));
-//
-//            leftSidePanel.add(player1);
-//            rightSidePanel.add(player2);
-//            topSidePanel.add(player3);
-//            bottomSidePanel.add(player4);
+            JButton   b4 = new JButton("Quit");
+       		b4.setFont(new Font("Bodoni MT Black", Font.BOLD, 22));
+       		b4.setBackground(Color.white);
+       		b4.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+       		b4.addActionListener(new ActionListener(){
+       			public void actionPerformed(ActionEvent e)
+       			{
+       				bf.gameOver();
+       				bf.dispose();
+       				
+       				MainMenu mm = new MainMenu();
+       				mm.createAndShowGUI();
+       			}
+       			
+       		});
 
             gameTimerLabel = new JLabel("GAME TIME:");
             turnTimerLabel = new JLabel("TURN TIME:");
@@ -301,23 +310,26 @@ public class BlokusGame{
             
             turnTimePanel.add(new JLabel("Turn Time:"),BorderLayout.PAGE_START);
             turnTimePanel.add(turnTimerLabel,BorderLayout.CENTER);
+            
 
             gameTimePanel.add(new JLabel("Game Time:"),BorderLayout.PAGE_START);
             gameTimePanel.add(gameTimerLabel,BorderLayout.CENTER);
+           
 
             botPanel.add(gameInfoLabel);
             botPanel.add(leftSidePanel);
             botPanel.add(rightSidePanel);
             botPanel.add(topSidePanel);
             botPanel.add(bottomSidePanel);
-
-       
-            blokusLogo = new JLabel(new ImageIcon("blokus.gif"));
+            
+         
+          
             topPanel.add(turnTimePanel);
-            topPanel.add(blokusLogo);
+           
             topPanel.add(gameTimePanel);
-//            topPanel.setPreferredSize(new Dimension(500,500));
-
+            topPanel.add(Box.createHorizontalStrut(100));
+            topPanel.add(b4);
+          
             showPiecePanel.add(jsp);
             showPiecePanel.add(surrenderButton);
 
@@ -326,15 +338,13 @@ public class BlokusGame{
 
             mainPanel.add(topPanel,BorderLayout.PAGE_START);
             mainPanel.add(showPiecePanel,BorderLayout.LINE_END);
-//            mainPanel.add(leftSidePanel,BorderLayout.LINE_START);
-//            mainPanel.add(rightSidePanel,BorderLayout.LINE_END);
             mainPanel.add(boardPanel,BorderLayout.CENTER);
             mainPanel.add(botPanel,BorderLayout.PAGE_END);
-//            mainPanel.add(topSidePanel,BorderLayout.PAGE_START);
-//            mainPanel.add(bottomSidePanel,BorderLayout.PAGE_END);
+
 
             getContentPane().add(mainPanel);
-            pack();
+           // add(b4, BorderLayout.PAGE_END);
+          //  pack();
             setVisible(true);
             turnTimer = new BlokusTimer(new TurnOver());
             gameTimer = new BlokusTimer(new GameOver());
@@ -366,34 +376,11 @@ public class BlokusGame{
         private void drawBorder(){
             JComponent piece = (JComponent) currentPlayerPiecesPanel.getComponent(pieceIndex);
             piece.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-            
-//            JComponent piece1 = (JComponent) player1PiecesPanel.getComponent(pieceIndex);
-//            piece1.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-//
-//            JComponent piece2 = (JComponent) player2PiecesPanel.getComponent(pieceIndex);
-//            piece2.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-//
-//            JComponent piece3 = (JComponent) player3PiecesPanel.getComponent(pieceIndex);
-//            piece3.setBorder(BorderFactory.createLineBorder(Color.GREEN));
-//
-//            JComponent piece4 = (JComponent) player4PiecesPanel.getComponent(pieceIndex);
-//            piece4.setBorder(BorderFactory.createLineBorder(Color.GREEN));
         }
 
         private void clearBorder(){
             JComponent piece = (JComponent) currentPlayerPiecesPanel.getComponent(pieceIndex);
             piece.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-//            JComponent piece1 = (JComponent) player1PiecesPanel.getComponent(pieceIndex);
-//            piece1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-//
-//            JComponent piece2 = (JComponent) player2PiecesPanel.getComponent(pieceIndex);
-//            piece1.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-//
-//            JComponent piece3 = (JComponent) player3PiecesPanel.getComponent(pieceIndex);
-//            piece3.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
-//
-//            JComponent piece4 = (JComponent) player4PiecesPanel.getComponent(pieceIndex);
-//            piece4.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         }
 
         private void displayMessage(String message, String title){
@@ -495,8 +482,9 @@ public class BlokusGame{
             return true;
         }
 
-        private void gameOver()
-        {
+        private void gameOver(){
+            turnTimer.stopTimer();
+            gameTimer.stopTimer();
             StringBuffer sb = new StringBuffer();
             for (int i = 0; i < NUM_PLAYERS; i++){
                 sb.append(Board.getColorName(getPlayerColor(i)));
@@ -505,7 +493,8 @@ public class BlokusGame{
                 sb.append("\n");
             }
             JOptionPane.showMessageDialog(this, sb.toString(), "Game Over", JOptionPane.INFORMATION_MESSAGE );
-            System.exit(0);
+            
+            //System.exit(0);
         }
 
         private int getPlayerColor(int index){
@@ -528,7 +517,5 @@ public class BlokusGame{
         }
     }
 
-    public static void main(String[] args){
-        BlokusFrame bf = new BlokusFrame();
-    }
+   
 }
