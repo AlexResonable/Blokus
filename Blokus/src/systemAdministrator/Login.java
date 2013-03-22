@@ -2,8 +2,8 @@ package systemAdministrator;
 
 import systemAdministrator.SystemAdministratorMain;
 import blokus5100.MainMenu;
-import blokus5100.MainMenu;
 import gameDesigner.GameDesignerMain;
+import application.LoginFunctions;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -23,9 +23,6 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Login implements ActionListener {
-    String sysAdmin = "sysAdmin";
-    String designerAdmin = "designerAdmin";
-    char pass[] = {'a', 's', 'd', 'f', 'a', 's', 'd', 'f'};
     private JLabel header = new JLabel("User Login");
     private JLabel errorField = new JLabel(" ");
     private JTextField usernameField = new JTextField(15);
@@ -111,6 +108,7 @@ public class Login implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
+        LoginFunctions lf = new LoginFunctions();
         if(ae.getSource() == backButton){
             //call menu
         	window.dispose();
@@ -119,22 +117,10 @@ public class Login implements ActionListener {
         else if(ae.getSource() == loginButton){
             String username = usernameField.getText();
             char password[] = passwordField.getPassword();
-            if(username.equals("") || password.length == 0){
+            if(lf.login(username, password) == false)
                 errorField.setText("<HTML><FONT COLOR = Red>Username and password must be valid</FONT></HTML>");
-            }
-            else if(username.equals(sysAdmin) && Arrays.equals(password, pass)){
-                window.dispose();//setVisible(false);
-                SystemAdministratorMain SAmain = new SystemAdministratorMain();
-                SAmain.ShowSystemAdministratorGUI();
-            }
-            else if(username.equals(designerAdmin) && Arrays.equals(password, pass)){
-                window.dispose();//setVisible(false);
-                GameDesignerMain game = new GameDesignerMain();
-                game.run();
-            }
-            else{
-                errorField.setText("<HTML><FONT COLOR = Red>Username and password must be valid</FONT></HTML>");
-            }
+            else
+                window.dispose();
         }
         
     }
