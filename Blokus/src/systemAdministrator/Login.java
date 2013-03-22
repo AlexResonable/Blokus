@@ -1,9 +1,9 @@
 package systemAdministrator;
 
-import systemAdministrator.SystemAdministratorMain;
-import blokus5100.MainMenu;
-import gameDesigner.GameDesignerMain;
 import application.LoginFunctions;
+import blokus5100.MainMenu;
+
+import gameDesigner.GameDesignerMain;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -13,7 +13,6 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -117,10 +116,20 @@ public class Login implements ActionListener {
         else if(ae.getSource() == loginButton){
             String username = usernameField.getText();
             char password[] = passwordField.getPassword();
-            if(lf.login(username, password) == false)
+            String loginReturn = lf.login(username, password);
+            if(loginReturn == null)
                 errorField.setText("<HTML><FONT COLOR = Red>Username and password must be valid</FONT></HTML>");
-            else
+            else if("DA".equals(loginReturn)){
+                GameDesignerMain game = new GameDesignerMain();
+                game.run();
                 window.dispose();
+            }
+            else if("SA".equals(loginReturn)){
+                SystemAdministratorMain.ShowSystemAdministratorGUI();
+                window.dispose();
+            }
+            else
+                errorField.setText("<HTML><FONT COLOR = Red>Username and password must be valid</FONT></HTML>");
         }
         
     }

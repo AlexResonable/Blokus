@@ -5,13 +5,8 @@ package blokus5100;
 import systemAdministrator.Login;
 import blokusGame.BlokusGame;
 import highScores.HighScores;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.*;
 import java.io.IOException;
 

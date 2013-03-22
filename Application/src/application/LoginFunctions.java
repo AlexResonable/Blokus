@@ -4,45 +4,37 @@
  */
 package application;
 
-import database.Connect;
-import gameDesigner.GameDesignerMain;
+import database.Database;
 import java.sql.*;
-import systemAdministrator.SystemAdministratorMain;
 
 /**
  *
  * @author kamijean2
  */
 public class LoginFunctions {
-    public Boolean login(String user, char password[]){
+    public String login(String user, char password[]){
         String pw = new String(password);
         if(user.equals("") || password.length == 0){
-            return false;
+            return null;
         }
         else{
             try {
-                Connection conn = Connect.ConnectDB();
+                Connection conn = Database.ConnectDB();
                 Statement stat = conn.createStatement();
                 ResultSet rs = stat.executeQuery("SELECT role FROM users WHERE username = '" + user + "' AND password = '" + pw + "'");
                 String role = rs.getString("role");
                     
-                if("DA".equals(role)){
-                    GameDesignerMain game = new GameDesignerMain();
-                    game.run();
-                    return true;
-                }
-                else if("SA".equals(role)){
-                    SystemAdministratorMain.ShowSystemAdministratorGUI();
-                    return true;
-                }
-                else{
-                    return false;
-                } 
+                if("DA".equals(role))
+                    return "DA";
+                else if("SA".equals(role))
+                    return "SA";
+                else
+                    return null;
             }
             catch (SQLException ex) {
                 System.out.println("Connection not established or user not found");
             }  
-            return false;
+            return null;
         }
     }
 }

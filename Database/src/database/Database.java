@@ -5,18 +5,18 @@
 package database;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
 /**
  *
- * @author kamijean2
+ * @author kamijean
  */
-public class Connect {
+public class Database {
+
     public static Connection ConnectDB(){
         try{
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:/home/kamijean2/Dropbox/Kami_Wilson/Blokus5100/blokus.sqlite");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:/home/kamijean/projects/Blokus/blokus.sqlite");
             return conn;
         }
         catch(Exception e){
@@ -32,4 +32,6 @@ public class Connect {
             System.out.println("Connection to database not closed");
         }
     }
+
+   
 }
