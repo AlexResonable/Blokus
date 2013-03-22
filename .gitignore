@@ -25,3 +25,7 @@ nb-configuration.xml
 *.swp
 *.out
 /Blokus/build/
+/Application/nbproject/private/
+/Database/nbproject/private/
+/Application/build/
+/Database/build/

@@ -2,14 +2,12 @@ package blokus5100;
 /**
  * Shujie Shen/ Dream Team
  */
-import systemAdministrator.Login;
 import blokusGame.BlokusGame;
 import highScores.HighScores;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.*;
 import java.io.IOException;
-
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +15,7 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import systemAdministrator.Login;
 
 
 
@@ -30,12 +29,14 @@ public class MainMenu extends JPanel
 	protected JLabel copyRight;
 	protected JButton b1, b2, b3, b4, b5;
 	protected static JFrame frame;
+        
 	public MainMenu()
 	{
 		//super(new BorderLayout());
 		this.setLayout(null);
 		this.setBackground(Color.white);
 		gameTitle = new JLabel();
+                
 		gameTitle.setFont(new Font("Bodoni MT Black", Font.BOLD, 42));
 		gameTitle.setHorizontalAlignment(JLabel.CENTER);
 		gameTitle.setPreferredSize(new Dimension(212, 227));
@@ -43,7 +44,7 @@ public class MainMenu extends JPanel
 		gameTitle.setText("BLOCKUS GAME");
 		
 		copyRight = new JLabel();
-		copyRight.setFont(new Font("AR DECODE",Font.BOLD, 24));
+		copyRight.setFont(new Font("AR DECODE",Font.BOLD, 18));
 		copyRight.setText("by The Dream Team");
 		/*
 		gameIcon = new JLabel();
@@ -70,9 +71,10 @@ public class MainMenu extends JPanel
 		
 		
 		b2 = new JButton("HOW TO PLAY");
-		b2.setFont(new Font("Bodoni MT Black", Font.BOLD, 18));
-		b2.setBackground(Color.white);
-		b2.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+                
+		//b2.setFont(new Font(Font.BOLD, 18));
+		//b2.setBackground(Color.white);
+		//b2.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 		b2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -86,9 +88,9 @@ public class MainMenu extends JPanel
 		});
 		
 		b3 = new JButton("LOG IN");
-		b3.setFont(new Font("Bodoni MT Black", Font.BOLD, 24));
-		b3.setBackground(Color.white);
-		b3.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+		//b3.setFont(new Font("Bodoni MT Black", Font.BOLD, 24));
+		//b3.setBackground(Color.white);
+		//b3.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 		b3.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -100,9 +102,9 @@ public class MainMenu extends JPanel
 		
 
 		b4 = new JButton("EXIT");
-		b4.setFont(new Font("Bodoni MT Black", Font.BOLD, 24));
-		b4.setBackground(Color.white);
-		b4.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+		//b4.setFont(new Font("Bodoni MT Black", Font.BOLD, 24));
+		//b4.setBackground(Color.white);
+		//b4.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 		b4.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -110,8 +112,8 @@ public class MainMenu extends JPanel
 		}
 		});
 		b5 = new JButton("HIGH SCORES");
-		b5.setFont(new Font("Bodoni MT Black", Font.BOLD, 18));
-		b5.setBackground(Color.white);
+		//b5.setFont(new Font("Bodoni MT Black", Font.BOLD, 18));
+		//b5.setBackground(Color.white);
 		b5.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 		b5.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -128,18 +130,25 @@ public class MainMenu extends JPanel
 		
 		
 		JPanel buttonPanel = new JPanel();
+                
 		buttonPanel.setLayout(null);
-		buttonPanel.setBackground(Color.white);
+		//buttonPanel.setBackground(Color.white);
 		buttonPanel.add(b1);
-		//b1.setBounds(0, 0, 200, 45);
+                //buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		b1.setBounds(0, 0, 200, 45);
 		buttonPanel.add(b2);
-		//b2.setBounds(0, 65, 200, 45);
+                //buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		b2.setBounds(0, 65, 200, 45);
 		buttonPanel.add(b3);
-		//b3.setBounds(0, 130, 200,45);
+                //buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		b3.setBounds(0, 130, 200,45);
 		buttonPanel.add(b4);
-		//b4.setBounds(0, 270, 200, 45);
+                //buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		b4.setBounds(0, 270, 200, 45);
 		buttonPanel.add(b5);
-		//b5.setBounds(0, 195, 200, 45);
+                //buttonPanel.add(Box.createRigidArea(new Dimension(0,10)));
+		b5.setBounds(0, 195, 200, 45);
+                
 		add(gameTitle);
 		gameTitle.setBounds(100,50,600, 100);
 		add(copyRight);
@@ -148,7 +157,7 @@ public class MainMenu extends JPanel
 		buttonPanel.setBounds(300,230,300,318);
 	//	add(gameIcon);
 		//gameIcon.setBounds(210, 580, 356,141);
-		
+		this.add(buttonPanel);
 		
 	}
 	
