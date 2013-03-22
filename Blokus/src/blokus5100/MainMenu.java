@@ -34,7 +34,7 @@ public class MainMenu extends JPanel
 	{
 		//super(new BorderLayout());
 		this.setLayout(null);
-		this.setBackground(Color.white);
+		//this.setBackground(Color.white);
 		gameTitle = new JLabel();
                 
 		gameTitle.setFont(new Font("Bodoni MT Black", Font.BOLD, 42));
@@ -44,7 +44,7 @@ public class MainMenu extends JPanel
 		gameTitle.setText("BLOCKUS GAME");
 		
 		copyRight = new JLabel();
-		copyRight.setFont(new Font("AR DECODE",Font.BOLD, 18));
+		copyRight.setFont(new Font("AR DECODE",Font.BOLD, 24));
 		copyRight.setText("by The Dream Team");
 		/*
 		gameIcon = new JLabel();
@@ -56,9 +56,9 @@ public class MainMenu extends JPanel
 		
 		
 		b1 = new JButton("PLAY");
-		b1.setFont(new Font("Bodoni MT Black", Font.BOLD, 24));
-		b1.setBackground(Color.white);
-		b1.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+		//b1.setFont(new Font("Bodoni MT Black", Font.BOLD, 24));
+		//b1.setBackground(Color.white);
+		//b1.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -114,7 +114,7 @@ public class MainMenu extends JPanel
 		b5 = new JButton("HIGH SCORES");
 		//b5.setFont(new Font("Bodoni MT Black", Font.BOLD, 18));
 		//b5.setBackground(Color.white);
-		b5.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+		//b5.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 		b5.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
