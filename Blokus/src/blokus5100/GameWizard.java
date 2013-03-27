@@ -1,5 +1,6 @@
 package blokus5100;
 
+import blokusGame.BlokusGame;
 import gameDesigner.PreviewBoard;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -201,6 +202,8 @@ public class GameWizard implements ActionListener {
             board.run();
         }
         else if(ae.getSource() == playButton){
+            window.dispose();
+            BlokusGame bg = new BlokusGame();
             //save board to database and then take back to menu with it added to the GUI
             //window.setVisible(false);
             

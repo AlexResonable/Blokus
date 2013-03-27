@@ -19,6 +19,7 @@ import systemAdministrator.Login;
 
 
 
+
 public class MainMenu extends JPanel
 {
 
@@ -62,7 +63,10 @@ public class MainMenu extends JPanel
 		b1.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
-				BlokusGame bg = new BlokusGame();
+                                GameWizard gm = new GameWizard();
+                                gm.run();
+                                
+				//BlokusGame bg = new BlokusGame();
 				
 				
 		}
