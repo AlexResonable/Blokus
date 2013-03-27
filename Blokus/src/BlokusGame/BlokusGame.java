@@ -283,8 +283,8 @@ public class BlokusGame{
             
             JButton   b4 = new JButton("Quit");
        		b4.setFont(new Font("Bodoni MT Black", Font.BOLD, 22));
-       		b4.setBackground(Color.white);
-       		b4.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+       		//b4.setBackground(Color.white);
+       		//b4.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
        		b4.addActionListener(new ActionListener(){
        			public void actionPerformed(ActionEvent e)
        			{

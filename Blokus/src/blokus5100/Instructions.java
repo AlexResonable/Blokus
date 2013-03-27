@@ -53,9 +53,9 @@ import javax.swing.*;
 			currentLine = br.readLine();
 			
 			backButton = new JButton("Back");
-			backButton.setFont(new Font("Bodoni MT Black", Font.BOLD, 16));
-			backButton.setBackground(Color.white);
-			backButton.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+			//backButton.setFont(new Font("Bodoni MT Black", Font.BOLD, 16));
+			//backButton.setBackground(Color.white);
+			//backButton.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
 			backButton.addActionListener( new ActionListener(){
 				public void actionPerformed(ActionEvent e){
 					fm.dispose();
