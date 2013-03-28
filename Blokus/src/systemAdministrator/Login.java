@@ -1,6 +1,6 @@
 package systemAdministrator;
 
-import application.LoginFunctions;
+import application.UserFunctions;
 import blokus5100.MainMenu;
 
 import gameDesigner.GameDesignerMain;
@@ -107,7 +107,7 @@ public class Login implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        LoginFunctions lf = new LoginFunctions();
+        UserFunctions lf = new UserFunctions();
         if(ae.getSource() == backButton){
             //call menu
         	window.dispose();
