@@ -15,7 +15,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import BlokusGame.BlokusGame;
+import blokusGame.BlokusGame;
 
 public class GameWizard implements ActionListener 
 {
