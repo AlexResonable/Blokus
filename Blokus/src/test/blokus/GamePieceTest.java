@@ -1,103 +1,101 @@
-package blokus;
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package test.blokus;
+
 import java.awt.image.BufferedImage;
-import java.awt.*;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-public class GamePiece{
-    public static final int BLANK_CELL = 0;
-    public static final int CORNER_CELL = 1;
-    public static final int ADJACENT_CELL = 2;
-    public static final int PIECE_CELL = 3;
-    public static final int SHAPE_CONTAINER_SIZE = 7;
+import blokus.GamePiece;
+import static org.junit.Assert.*;
 
-    public static final int POINT_WEIGHT = 1;
-    public static final int NUMBER_OF_PIECES = 21;
-    //public static final int DEFAULT_RESOLUTION = 120;
-    public static final int PIECE_PREVIEW_RESOLUTION = 40;
 
-    private int[][] shapeContainer;
-    private int shapeColor;
-    private Boolean isUsed;
+public class GamePieceTest {
+    
+    public GamePieceTest() {
+    }
+    int shape[][] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
+        int shape2[][] = new int[][] {
+            {0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 2, 1, 0, 0},
+            {0, 0, 2, 3, 2, 0, 0},
+            {0, 1, 2, 3, 2, 1, 0},
+            {0, 2, 3, 3, 3, 2, 0},
+            {0, 1, 2, 2, 2, 1, 0},
+            {0, 0, 0, 0, 0, 0, 0}
+        };
 
-    public GamePiece(int[][] shape, int color){
-        shapeContainer = (int[][]) shape.clone();
-        shapeColor = color;
-        isUsed = false;
+    /**
+     * Test of rotateLeft method, of class GamePiece.
+     */
+    @Test
+    public void testRotateLeft() {
+        System.out.println("rotateLeft");
+        GamePiece instance = new GamePiece(shape, 1);
+        instance.rotateLeft();
     }
 
-    public void rotateLeft(){
-        int[][] temp = new int[SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
-        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
-            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
-                temp[col][SHAPE_CONTAINER_SIZE - row - 1] = shapeContainer[row][col];
-
-        shapeContainer = temp;
+    /**
+     * Test of rotateRight method, of class GamePiece.
+     */
+    @Test
+    public void testRotateRight() {
+        System.out.println("rotateRight");
+        GamePiece instance = new GamePiece(shape, 1);
+        instance.rotateRight();
     }
 
-    public void rotateRight(){
-        int[][] temp = new int[SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
-        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
-            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
-                temp[SHAPE_CONTAINER_SIZE - col - 1][row] = shapeContainer[row][col];
-
-        shapeContainer = temp;
+    /**
+     * Test of isPieceUsed method, of class GamePiece.
+     */
+    @Test
+    public void testIsPieceUsed() {
+        System.out.println("isPieceUsed");
+        GamePiece instance = new GamePiece(shape, 1);;
+        Boolean expResult = false;
+        Boolean result = instance.isPieceUsed();
+        assertEquals(expResult, result);
     }
 
-    public Boolean isPieceUsed(){
-        return isUsed;
+    /**
+     * Test of setToUsed method, of class GamePiece.
+     */
+    @Test
+    public void testSetToUsed() {
+        System.out.println("setToUsed");
+        GamePiece instance = new GamePiece(shape, 1);
+        instance.setToUsed();
     }
 
-    public void setToUsed(){
-        isUsed = true;
+    /**
+     * Test of flip method, of class GamePiece.
+     */
+    @Test
+    public void testFlip() {
+        System.out.println("flip");
+        GamePiece instance = new GamePiece(shape, 1);;
+        instance.flip();
     }
 
-    public void flip(){
-        int[][] temp = new int[SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
-        for(int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
-            for(int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
-                temp[SHAPE_CONTAINER_SIZE - row - 1][col] = shapeContainer[row][col];
-
-        shapeContainer = temp;
-    }
-
-    public BufferedImage render(int size){
-        int cellSize = size / (SHAPE_CONTAINER_SIZE);
-        BufferedImage image = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
-        Graphics2D g = (Graphics2D) image.getGraphics();
-
-        if(isUsed){
-            g.setColor(Color.WHITE);
-            g.fill3DRect(0, 0, size, size,false);
-        }
-        else{
-            g.setColor(Color.WHITE);
-            g.fill3DRect(0, 0, size, size,true);
-        }
-        //g.fillRect(0, 0, size, size);
-
-        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++){
-            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++){
-                if (shapeContainer[row][col] == PIECE_CELL){
-                    BasicStroke bs1 = new BasicStroke(1, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
-                    //g.setStroke(bs1);
-                    g.setPaint(new GradientPaint(0,0,Color.WHITE,100, 0,Color.GRAY));
-                    g.setColor(Board.getColor(shapeColor));
-                    
-                    g.fill3DRect(row * cellSize, col * cellSize, cellSize, cellSize,true);
-                    //g.fillRect(row * cellSize, col * cellSize, cellSize, cellSize);
-                    //g.setColor(Board.getColor(shapeColor));
-                    //g.setColor(Color.BLACK);
-                    g.setPaint(new GradientPaint(0,0,Color.WHITE,100, 0,Color.GRAY));
-                    g.drawRect(row * cellSize, col * cellSize, cellSize, cellSize);
-                }
-            }
-        }
-
-        return image;
-    }
-
-    public static int[][][] getAllShapes(){
-        int[][][] shapes = new int[NUMBER_OF_PIECES][SHAPE_CONTAINER_SIZE][SHAPE_CONTAINER_SIZE];
+    /**
+     * Test of getAllShapes method, of class GamePiece.
+     */
+    @Test
+    public void testGetAllShapes() {
+        System.out.println("getAllShapes");
         int i = 0;
+        int[][][] expResult = new int[21][][];
 
 ////////////////////////////////////////////////////////////////////////////////
         // monomino
@@ -105,7 +103,7 @@ public class GamePiece{
 
 
         // *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
@@ -121,7 +119,7 @@ public class GamePiece{
 
 
         // * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
             {0, 0, 2, 3, 2, 0, 0},
@@ -138,7 +136,7 @@ public class GamePiece{
 
         // *
         // * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
             {0, 0, 2, 3, 2, 1, 0},
@@ -149,7 +147,7 @@ public class GamePiece{
         };
 
         // * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 1, 2, 2, 2, 1, 0},
@@ -166,7 +164,7 @@ public class GamePiece{
 
         //   *
         // * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
             {0, 1, 2, 3, 2, 1, 0},
@@ -178,7 +176,7 @@ public class GamePiece{
 
         // * * *
         //     *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 1, 2, 2, 2, 2, 0},
@@ -189,7 +187,7 @@ public class GamePiece{
         };
 
         // * * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 1, 2, 1, 0, 0},
             {0, 0, 2, 3, 2, 0, 0},
             {0, 0, 2, 3, 2, 0, 0},
@@ -201,7 +199,7 @@ public class GamePiece{
 
         //   * *
         // * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 2, 1, 0},
             {0, 1, 2, 3, 3, 2, 0},
@@ -213,7 +211,7 @@ public class GamePiece{
 
         // * *
         // * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 1, 2, 2, 1, 0, 0},
             {0, 2, 3, 3, 2, 0, 0},
@@ -229,7 +227,7 @@ public class GamePiece{
 
 
         // * * * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {1, 2, 2, 2, 2, 2, 1},
@@ -241,7 +239,7 @@ public class GamePiece{
 
         // *
         // * * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 1, 2, 1, 0, 0, 0},
             {0, 2, 3, 2, 2, 2, 1},
@@ -255,7 +253,7 @@ public class GamePiece{
         // *
         // * *
         //   *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 1, 2, 1, 0, 0},
             {0, 0, 2, 3, 2, 0, 0},
             {0, 0, 2, 3, 2, 1, 0},
@@ -267,7 +265,7 @@ public class GamePiece{
 
         //   *
         // * * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
             {0, 1, 2, 3, 2, 2, 1},
@@ -280,7 +278,7 @@ public class GamePiece{
         //   *
         // * * *
         //     *
-        shapes[i++] = new int[][] { 
+        expResult[i++] = new int[][] { 
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
             {0, 1, 2, 3, 2, 1, 0},
@@ -293,7 +291,7 @@ public class GamePiece{
         //   *
         // * * *
         //   *
-        shapes[i++] = new int[][] { 
+        expResult[i++] = new int[][] { 
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
             {0, 1, 2, 3, 2, 1, 0},
@@ -305,7 +303,7 @@ public class GamePiece{
 
         // * * *
         // *   *
-        shapes[i++] = new int[][] { 
+        expResult[i++] = new int[][] { 
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 1, 2, 2, 2, 1, 0},
@@ -317,7 +315,7 @@ public class GamePiece{
 
         // * * *
         //   * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 1, 2, 2, 2, 1, 0},
@@ -330,7 +328,7 @@ public class GamePiece{
         //     *
         //   * *
         // * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 1, 2, 1, 0},
             {0, 0, 1, 2, 3, 2, 0},
@@ -343,7 +341,7 @@ public class GamePiece{
         //   *
         //   *
         // * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 1, 0, 0},
             {0, 0, 2, 3, 2, 0, 0},
@@ -356,7 +354,7 @@ public class GamePiece{
         // *
         // *
         // * * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 1, 2, 1, 0, 0},
             {0, 0, 2, 3, 2, 0, 0},
             {0, 0, 2, 3, 2, 2, 1},
@@ -369,7 +367,7 @@ public class GamePiece{
         //   * *
         //   *
         // * *
-        shapes[i++] = new int[][] {
+        expResult[i++] = new int[][] {
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 1, 2, 2, 1, 0},
             {0, 0, 2, 3, 3, 2, 0},
@@ -378,41 +376,81 @@ public class GamePiece{
             {0, 1, 2, 2, 1, 0, 0},
             {0, 0, 0, 0, 0, 0, 0}
         };
-
-        return shapes;
+        
+        int[][][] result = GamePiece.getAllShapes();
+        assertEquals(expResult, result);
     }
 
-    public int getValue(int row, int col){
-        return shapeContainer[row][col];
+    /**
+     * Test of getValue method, of class GamePiece.
+     */
+    @Test
+    public void testGetValue() {
+        System.out.println("getValue");
+        int row = 0;
+        int col = 0;
+        GamePiece instance = new GamePiece(shape, 1);
+        int expResult = 0;
+        int result = instance.getValue(row, col);
+        assertEquals(expResult, result);
     }
 
-    public int getColor(){
-        return shapeColor;
+    /**
+     * Test of getColor method, of class GamePiece.
+     */
+    @Test
+    public void testGetColor() {
+        System.out.println("getColor");
+        GamePiece instance = new GamePiece(shape, 1);
+        int expResult = 1;
+        int result = instance.getColor();
+        assertEquals(expResult, result);
     }
 
-    public int getTotalPoints(){
-        int totalPoints = 0;
-        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++)
-            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++)
-                if (shapeContainer[row][col] == PIECE_CELL)
-                    totalPoints++;
-        return totalPoints * POINT_WEIGHT;
+    /**
+     * Test of getTotalPoints method, of class GamePiece.
+     */
+    @Test
+    public void testGetTotalPoints() {
+        System.out.println("getTotalPoints");
+        GamePiece instance = new GamePiece(shape, 1);
+        int expResult = 1;
+        int result = instance.getTotalPoints();
+        assertEquals(expResult, result);
+        GamePiece instance2 = new GamePiece(shape2, 1);
+        int expResult2 = 5;
+        int result2 = instance2.getTotalPoints();
+        assertEquals(expResult2, result2);
     }
 
-    public int getContainerSize(){
-        return SHAPE_CONTAINER_SIZE;
+    /**
+     * Test of getContainerSize method, of class GamePiece.
+     */
+    @Test
+    public void testGetContainerSize() {
+        System.out.println("getContainerSize");
+        GamePiece instance = new GamePiece(shape, 1);
+        int expResult = 7;
+        int result = instance.getContainerSize();
+        assertEquals(expResult, result);
     }
 
-    @Override
-    public String toString(){
-        StringBuilder stringBuffer = new StringBuilder();
-        for (int row = 0; row < SHAPE_CONTAINER_SIZE; row++){
-            for (int col = 0; col < SHAPE_CONTAINER_SIZE; col++){
-                stringBuffer.append(shapeContainer[row][col]);
-                stringBuffer.append(" ");
-            }
-            stringBuffer.append("\n");
-        }
-        return stringBuffer.toString();
+    /**
+     * Test of toString method, of class GamePiece.
+     */
+    @Test
+    public void testToString() {
+        System.out.println("toString");
+        GamePiece instance = new GamePiece(shape, 1);
+        String expResult = "0 0 0 0 0 0 0 \n"
+                + "0 0 0 0 0 0 0 \n"
+                + "0 0 1 2 1 0 0 \n"
+                + "0 0 2 3 2 0 0 \n"
+                + "0 0 1 2 1 0 0 \n"
+                + "0 0 0 0 0 0 0 \n"
+                + "0 0 0 0 0 0 0 \n";
+        //String expResult = "";
+        String result = instance.toString();
+        assertEquals(expResult, result);
     }
 }

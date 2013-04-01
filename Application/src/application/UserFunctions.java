@@ -5,8 +5,8 @@
 package application;
 
 import database.Database;
+import models.User;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -80,8 +80,8 @@ public class UserFunctions {
         return users;
     }
     
-    public String[] getUserInfo(String username){
-        String[] userInfo = new String[3];
+    public User getUserInfo(String username){
+        User userInfo = new User();
         Connection conn = null;
         Statement stat = null;
         ResultSet rs = null;
@@ -90,9 +90,9 @@ public class UserFunctions {
             stat = conn.createStatement();
             rs = stat.executeQuery("SELECT username, password, role FROM users WHERE username = '" + username + "';");
             while (rs.next()) {
-                userInfo[0] = rs.getString("username");
-                userInfo[1] = rs.getString("password");
-                userInfo[2] = rs.getString("role");
+                userInfo.setUsername(rs.getString("username"));
+                userInfo.setPassword(rs.getString("password"));
+                userInfo.setRole(rs.getString("role"));
             }
             rs.close();
             stat.close();
@@ -112,21 +112,24 @@ public class UserFunctions {
         return userInfo;
     }
     
-    public Boolean updateUser(String oldUsername, String username, String password, String role){
+    public User updateUser(User user, String username){
         Connection conn = null;
         Statement stat = null;
         ResultSet rs = null;
+        String name = user.getUsername();
+        String pw = user.getPassword();
+        String rl = user.getRole();
         try {
             conn = Database.ConnectDB();
             stat = conn.createStatement();
-            rs = stat.executeQuery("SELECT * FROM users WHERE username = '" + oldUsername + "';");
+            rs = stat.executeQuery("SELECT * FROM users WHERE username = '" + name + "';");
 
             if(!rs.next()){
-                stat.executeUpdate("INSERT INTO users (username,password,role) VALUES ('" + username + "','" + password + "','"+ role +"')");
+                stat.executeUpdate("INSERT INTO users (username,password,role) VALUES ('" + username + "','" + pw + "','"+ rl +"')");
                 conn.setAutoCommit(true);
             }
             else{
-                stat.executeUpdate("UPDATE users SET username = '" + username + "', password = '" + password + "', role = '" + role + "' WHERE username = '" + oldUsername + "'");
+                stat.executeUpdate("UPDATE users SET username = '" + username + "', password = '" + pw + "', role = '" + rl + "' WHERE username = '" + name + "'");
                 conn.setAutoCommit(true);
             }
             rs.close();
@@ -142,9 +145,10 @@ public class UserFunctions {
             } catch (SQLException ex1) {
                 Logger.getLogger(UserFunctions.class.getName()).log(Level.SEVERE, null, ex1);
             }
-            return false;
+            user.setUsername("");
+            return null;
         }  
-        return true;
+        return user;
     }
     
     public Boolean deleteUser(String username){

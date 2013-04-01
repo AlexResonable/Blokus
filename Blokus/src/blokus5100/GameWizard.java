@@ -1,6 +1,5 @@
 package blokus5100;
 
-import blokusGame.BlokusGame;
 import gameDesigner.PreviewBoard;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,7 +15,10 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-public class GameWizard implements ActionListener {
+import BlokusGame.BlokusGame;
+
+public class GameWizard implements ActionListener 
+{
     private JFrame window = new JFrame("Settings for Blokus"); 
     private JLabel header = new JLabel("Modify Settings");
     private JTextField player1 = new JTextField(15);
@@ -31,10 +33,11 @@ public class GameWizard implements ActionListener {
     DefaultComboBoxModel model = new DefaultComboBoxModel();  
     private JButton boardButton = new JButton("Preview Board");
     private JButton backButton = new JButton("Back");
-    private JButton playButton = new JButton("Play!!");
+    private JButton playButton = new JButton("Play");
     private JPanel innerPane = new JPanel();
     
-    public void run(){
+    public void run()
+    {
         this.createDesignerMain();
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     
@@ -47,20 +50,29 @@ public class GameWizard implements ActionListener {
         window.setVisible(true);
     }
     
-    private void createDesignerMain(){
+    private void createDesignerMain()
+    {
         window.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
+        
+        // "Modify Settings" field
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
         c.insets = new Insets(10,40,0,0);
         header.setFont(new Font("Arial", Font.PLAIN, 24));
         window.add(header, c);
+        
+        // Field in the black square
         c.gridwidth = 1;
-        Border borderBlack = BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.lightGray, Color.darkGray);
+        Border borderBlack = BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.lightGray, Color.blue);
         innerPane.setLayout(new GridBagLayout());
+        innerPane.setBorder(borderBlack);
+        
+        // add play name field 1-4
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(15,20,5,20);
@@ -69,6 +81,7 @@ public class GameWizard implements ActionListener {
         c.gridy = 0;
         c.insets = new Insets(15,0,5,0);
         innerPane.add(player1,c);
+        
         c.gridx = 0;
         c.gridy = 1;
         c.insets = new Insets(5,20,5,20);
@@ -77,6 +90,7 @@ public class GameWizard implements ActionListener {
         c.gridy = 1;
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player2,c);
+        
         c.gridx = 0;
         c.gridy = 2;
         c.insets = new Insets(5,20,5,20);
@@ -85,6 +99,7 @@ public class GameWizard implements ActionListener {
         c.gridy = 2;
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player3,c);
+        
         c.gridx = 0;
         c.gridy = 3;
         c.insets = new Insets(5,20,5,20);
@@ -93,6 +108,8 @@ public class GameWizard implements ActionListener {
         c.gridy = 3;
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player4,c);
+        
+        // "Game Model" field
         gameNames.setModel(model);
         gameNames.addItem("Normal Game");
         JPanel gameMode = new JPanel(new GridBagLayout());
@@ -103,18 +120,24 @@ public class GameWizard implements ActionListener {
         mode.add(easy);
         mode.add(medium);
         mode.add(hard);
+        
+        // "Easy" button
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(5,0,5,5);
         gameMode.add(easy,c);
-        easy.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
+        easy.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e)
+            {
                 //get easy games from database and show them
                 gameNames.removeAllItems();
                 gameNames.addItem("Normal Game");
                 
             }
         });
+        
+        // "Medium" button
         c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(5,0,5,5);
@@ -127,7 +150,9 @@ public class GameWizard implements ActionListener {
                 
             }
         });
-        easy.addActionListener(this);
+        medium.addActionListener(this);
+        
+        //"Hard" button
         c.gridx = 2;
         c.gridy = 0;
         c.insets = new Insets(5,0,5,5);
@@ -140,6 +165,8 @@ public class GameWizard implements ActionListener {
                 
             }
         });
+        
+        // Game combBox
         c.gridx = 0;
         c.gridy = 1;
         c.gridwidth = 1;
@@ -151,37 +178,39 @@ public class GameWizard implements ActionListener {
         c.insets = new Insets(5,0,5,10);
         gameMode.add(gameNames,c);
         
-        
+        // add "Game Mode" to inner panel
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 3;
         c.insets = new Insets(5,20,5,20);
         innerPane.add(gameMode,c);
         
+        // add "Preview Board" to inner panel
         c.gridx = 1;
         c.gridy = 5;
         c.gridwidth = 3;
         c.insets = new Insets(20,10,15,20);
         innerPane.add(boardButton,c);
         boardButton.addActionListener(this);
-        innerPane.setBorder(borderBlack);
+      
+        // add "inner panel,"back" button, "play" button to the window
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 1;
         c.gridwidth = 4;
         c.insets = new Insets(0,30,20,30);
         window.add(innerPane,c);
+        
         c.gridx = 0;
         c.gridy = 3;
         c.ipady = 5;
         c.insets = new Insets(0,30,20,350);
         window.add(backButton, c);
         backButton.addActionListener(this);
+        
         c.gridx = 2;
         c.gridy = 3;
         c.insets = new Insets(0,30,20,30);
-        playButton.setBackground(Color.blue);
-        playButton.setForeground(Color.white);
         window.add(playButton, c);
         playButton.addActionListener(this);
         window.pack();
@@ -189,24 +218,26 @@ public class GameWizard implements ActionListener {
 
     }
     @Override
-    public void actionPerformed(ActionEvent ae) {
-        if(ae.getSource() == backButton){
+    public void actionPerformed(ActionEvent ae) 
+    {
+        if(ae.getSource() == backButton)
+        {
             //take back to main menu screen
             window.setVisible(false);
             MainMenu.createAndShowGUI();
         }
-        else if(ae.getSource() == boardButton){
+        else if(ae.getSource() == boardButton)
+        {
             //take to board where you can edit which squares are blocked
             window.setVisible(false);
             PreviewBoard board = new PreviewBoard();
             board.run();
         }
-        else if(ae.getSource() == playButton){
+        else if(ae.getSource() == playButton)
+        {
             window.dispose();
             BlokusGame bg = new BlokusGame();
-            //save board to database and then take back to menu with it added to the GUI
-            //window.setVisible(false);
-            
+            //save board to database and then take back to menu with it added to the GUI 
         }
     }
     

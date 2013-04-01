@@ -6,18 +6,22 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 public class GameDesignerMain implements ActionListener{
     private JButton logout = new JButton("Logout");
-    private JLabel header = new JLabel("Game Designer Main");
-    private JButton newGame = new JButton("New");
-    private JFrame window = new JFrame("System Login");
-    private JPanel innerPane = new JPanel();
-    private JLabel game1 = new JLabel("Normal Game");
+    private JButton newGame = new JButton("Create New");
     private JButton game1Edit = new JButton("Edit");
     private JButton game1Delete = new JButton("Delete");
     
-    public void run(){
+    private JLabel header = new JLabel("Game Designer Main");
+    private JLabel game1 = new JLabel("Normal Game");
+    
+    private JFrame window = new JFrame("System Login");
+    private JPanel innerPane = new JPanel();
+   
+    public void run()
+    {
         this.createDesignerMain();
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
     
@@ -35,12 +39,16 @@ public class GameDesignerMain implements ActionListener{
         GridBagConstraints c = new GridBagConstraints();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         c.fill = GridBagConstraints.HORIZONTAL;
+        
+        // "Game Designer Main" header
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
-        c.insets = new Insets(10,40,0,0);
+        c.insets = new Insets(10,20,0,0);
         header.setFont(new Font("Arial", Font.PLAIN, 24));
         window.add(header, c);
+      
+        // "logout" button
         c.gridwidth = 1;
         c.gridx = 2;
         c.gridy = 0;
@@ -50,24 +58,37 @@ public class GameDesignerMain implements ActionListener{
         c.insets = new Insets(10,80,5,30);
         window.add(logout,c);
         logout.addActionListener(this);
-        c.gridx = 0;
+        
+        
+        // "New Game" button
+        c.gridx = 1;
         c.gridy = 1;
-        c.gridwidth = 1;
-        c.insets = new Insets(10,30,0,0);
-        window.add(new Label("Game Name"),c);
+        c.gridwidth = 3;
+        c.insets = new Insets(20,150,20,150);
+        window.add(newGame, c);
+        newGame.addActionListener(this);
+     
+        
+        // "New Game" button
+        /*
         c.gridx = 2; 
         c.gridy = 1;
         c.ipadx = 5;
         c.ipady = 5;
         c.insets = new Insets(10,80,5,30);
         window.add(newGame, c);
-        newGame.addActionListener(this);
+        newGame.addActionListener(this);*/
+        TitledBorder titleBorder = BorderFactory.createTitledBorder("Game list");
         Border borderBlack = BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.lightGray, Color.blue);
+        titleBorder.setBorder(borderBlack);
+        
         innerPane.setLayout(new GridBagLayout());
         c.gridx = 0;
         c.gridy = 0;
+        c.gridwidth=1;
         c.insets = new Insets(5,20,5,20);
         innerPane.add(game1,c);
+        
         c.gridx = 1;
         innerPane.add(game1Edit,c);
         game1Edit.addActionListener(this);
@@ -76,7 +97,7 @@ public class GameDesignerMain implements ActionListener{
         innerPane.add(game1Delete,c);
         game1Delete.setEnabled(false);
         game1Delete.addActionListener(this);
-        innerPane.setBorder(borderBlack);
+        innerPane.setBorder(titleBorder);
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 3;
