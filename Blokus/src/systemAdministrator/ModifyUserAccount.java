@@ -150,9 +150,12 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 
             innerPane.add(textPane);
             textPane.setBounds(50, 45, 300, 80);
+            
+            innerPane.add(errorField);
+            errorField.setBounds(35, 125, 300, 15);
 
             innerPane.add(radioButtonPane);
-            radioButtonPane.setBounds(65, 135, 330, 50);
+            radioButtonPane.setBounds(65, 145, 330, 50);
 
             innerPane.add(deleteButton);
             deleteButton.setBounds(300, 190, 90, 30);
@@ -199,6 +202,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                     systemAdministratorButton.setEnabled(true);
                     newButton.setEnabled(true);
                     deleteButton.setEnabled(true);
+                    saveButton.setEnabled(true);
                     if(userInfo.getRole().equals("SA")){
                         systemAdministratorButton.setSelected(true);
                     }
@@ -235,11 +239,10 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                             if(!oldUsername.equals("")){
                                 userList.removeItemAt(userList.getSelectedIndex());
                             }
+                            userList.addItem(userName);
+                            userList.setSelectedItem(userName);
                         }
                         errorField.setText("<HTML><FONT COLOR = Green>" + saved.getUsername() + " has been saved!</FONT></HTML>");
-                        userList.addItem(userName);
-                        userList.setSelectedItem(userName);
-                        deleteButton.setEnabled(true);
                     }
                     else{
                         errorField.setText("<HTML><FONT COLOR = Red>" + saved.getUsername() + " has not been saved!</FONT></HTML>");
@@ -282,7 +285,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 	public static void showUserManagementGUI()
 	{
 		frame = new JFrame("MANAGE USER ACCOUNT");
-		frame.setSize(600, 500); //window size
+		frame.setSize(500, 370); //window size
 		frame.setLocation((width -600)/2,(height-500)/2); //window location
 		frame.setResizable(false); // fix window size
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// close window, program close
