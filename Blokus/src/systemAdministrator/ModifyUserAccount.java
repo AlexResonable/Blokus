@@ -9,7 +9,6 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -185,7 +184,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                     gameDesignerButton.setEnabled(false);
                     systemAdministratorButton.setEnabled(false);
                     deleteButton.setEnabled(false);
-                    newButton.setEnabled(false);
+                    newButton.setEnabled(true);
                 }
                 else{
                     User userInfo = new User();
@@ -194,7 +193,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                     userNameField.setEnabled(true);
                     passwordField.setText(userInfo.getPassword());
                     passwordField.setEnabled(true);
-                    confirmPasswordField.setText(userInfo.getRole());
+                    confirmPasswordField.setText(userInfo.getPassword());
                     confirmPasswordField.setEnabled(true);
                     gameDesignerButton.setEnabled(true);
                     systemAdministratorButton.setEnabled(true);
@@ -236,10 +235,11 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                             if(!oldUsername.equals("")){
                                 userList.removeItemAt(userList.getSelectedIndex());
                             }
-                            userList.addItem(userName);
-                            userList.setSelectedItem(userName);
                         }
                         errorField.setText("<HTML><FONT COLOR = Green>" + saved.getUsername() + " has been saved!</FONT></HTML>");
+                        userList.addItem(userName);
+                        userList.setSelectedItem(userName);
+                        deleteButton.setEnabled(true);
                     }
                     else{
                         errorField.setText("<HTML><FONT COLOR = Red>" + saved.getUsername() + " has not been saved!</FONT></HTML>");
