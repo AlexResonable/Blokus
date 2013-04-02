@@ -3,7 +3,9 @@ package systemAdministrator;
 import application.UserFunctions;
 import blokus5100.MainMenu;
 
-import gameDesigner.GameDesignerMain;
+import gameDesigner.ModifyGameDesign;
+import gameDesigner.setBoard;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -15,6 +17,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -24,10 +27,12 @@ import javax.swing.JTextField;
 public class Login implements ActionListener {
     private JLabel header = new JLabel("User Login");
     private JLabel errorField = new JLabel(" ");
+    
     private JTextField usernameField = new JTextField(15);
     private JPasswordField passwordField = new JPasswordField(15);
     private JButton backButton = new JButton("Back");
     private JButton loginButton = new JButton("Login");
+    
     private JFrame window = new JFrame("System Login");
     private JPanel contentPane = (JPanel)window.getContentPane(); 
     
@@ -44,7 +49,8 @@ public class Login implements ActionListener {
         window.setVisible(true);
     }
     
-    private void createLogin(){
+    private void createLogin()
+    {
         window.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -120,8 +126,11 @@ public class Login implements ActionListener {
             if(loginReturn == null)
                 errorField.setText("<HTML><FONT COLOR = Red>Username and password must be valid</FONT></HTML>");
             else if("DA".equals(loginReturn)){
-                GameDesignerMain game = new GameDesignerMain();
-                game.run();
+                //GameDesignerMain game = new GameDesignerMain();
+                //game.run();
+            	
+            	ModifyGameDesign MGD = new ModifyGameDesign(new setBoard());
+            	MGD.run();
                 window.dispose();
             }
             else if("SA".equals(loginReturn)){

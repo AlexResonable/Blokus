@@ -6,7 +6,6 @@ package gameDesigner;
 
 import systemAdministrator.Login;
 import gameDesigner.setBoard;
-import gameDesigner.GameDesignerMain;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -34,6 +33,9 @@ public class ModifyGameDesign implements ActionListener {
     int pieceNum = 21;
     private JFrame window = new JFrame("Modify Game Design"); 
     private JLabel header = new JLabel("Modify Game Board");
+    
+    private JComboBox gameList = new JComboBox();
+    
     private JButton logout = new JButton("Logout");
     private SpinnerModel gameSizeModel = new SpinnerNumberModel(getSizeX(), 20, 100, 10);
     private JSpinner size1 = new JSpinner(gameSizeModel);
@@ -49,8 +51,9 @@ public class ModifyGameDesign implements ActionListener {
     private JSpinner pieces = new JSpinner(pieceModel);
     private JButton boardButton = new JButton("Edit Board");
     private JButton piecesButton = new JButton("Edit Pieces");
-    private JButton backButton = new JButton("Back");
+    private JButton createNewButton = new JButton("New");
     private JButton saveButton = new JButton("Save Design");
+    private JButton deleteButton = new JButton("Detele");
     private JPanel innerPane = new JPanel();
 
     public int getGameNum() {
@@ -114,7 +117,7 @@ public class ModifyGameDesign implements ActionListener {
         window.setVisible(true);
     }
     
-    ModifyGameDesign(setBoard game){
+    public ModifyGameDesign(setBoard game){
         this.setSizeX(game.getSizeX());
         this.setSizeY(game.getSizeY());
         this.setTurnNum(game.getTurnTime());
@@ -132,83 +135,109 @@ public class ModifyGameDesign implements ActionListener {
         c.gridx = 0;
         c.gridy = 0;
         c.gridwidth = 2;
-        c.insets = new Insets(10,40,0,0);
+        c.insets = new Insets(10,40,0,60);
         header.setFont(new Font("Arial", Font.PLAIN, 24));
         window.add(header, c);
-        c.gridwidth = 1;
-        c.gridx = 2;
-        c.gridy = 0;
         
-        
-        /*logout.setContentAreaFilled(false);
+        c.gridx=2;
+        c.gridy=0;
+        c.insets = new Insets(10,50,0,60);
+        logout.setContentAreaFilled(false);
         logout.setBorderPainted(false);
         logout.setForeground(Color.blue);
-        c.insets = new Insets(10,70,5,30);
-        window.add(logout,c);
-        logout.addActionListener(this);*/
-        
+        logout.addActionListener(this);
+        window.add(logout, c);
         
         Border borderBlack = BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.lightGray, Color.blue);
         innerPane.setLayout(new GridBagLayout());
         c.gridx = 0;
         c.gridy = 0;
-        c.insets = new Insets(15,20,5,20);
-        innerPane.add(new JLabel("Game Board Size "),c);
+        c.gridwidth =1;
+        c.insets = new Insets(15,20,5,0);
+        innerPane.add(new JLabel("Choose Designed Game "),c);
+       
+       
+        
         c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(15,0,5,0);
+        innerPane.add(gameList);
+        
+        c.gridx = 0;
+        c.gridy = 1;
+        c.insets = new Insets(15,20,5,20);
+        innerPane.add(new JLabel("Game Board Size "),c);
+        
+        c.gridx = 1;
+        c.gridy = 1;
+        c.insets = new Insets(15,0,5,0);
         size1.setValue(getSizeX());
         innerPane.add(size1,c);
+        
+        
         c.gridx = 2;
-        c.gridy = 0;
+        c.gridy = 1;
         innerPane.add(new JLabel("  x  "),c);
+        
         c.gridx = 3;
-        c.gridy = 0;
+        c.gridy = 1;
         c.insets = new Insets(15,0,5,10);
         size2.setValue(getSizeY());
         innerPane.add(size2,c);
+        
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 2;
         c.insets = new Insets(5,20,5,20);
         innerPane.add(new JLabel("Number of Players "),c);
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
         c.insets = new Insets(5,0,5,0);
         players.setValue(getPlayerNum());
         innerPane.add(players,c);
+        
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         c.insets = new Insets(5,20,5,20);
         innerPane.add(new JLabel("Turn Time (seconds) "),c);
         c.gridx = 1;
-        c.gridy = 2;
+        c.gridy = 3;
         c.insets = new Insets(5,0,5,0);
         turnTime.setValue(getTurnNum());
         innerPane.add(turnTime,c);
         c.gridx = 0;
-        c.gridy = 3;
+        c.gridy = 4;
         c.insets = new Insets(5,20,5,20);
         innerPane.add(new JLabel("Game Time (minutes)"),c);
         c.gridx = 1;
-        c.gridy = 3;
+        c.gridy = 4;
         c.insets = new Insets(5,0,5,0);
         gameTime.setValue(getGameNum());
         innerPane.add(gameTime,c);
+        
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 5;
         c.insets = new Insets(5,20,5,20);
         innerPane.add(new JLabel("Number of Pieces"),c);
         c.gridx = 1;
-        c.gridy = 4;
+        c.gridy = 5;
         c.insets = new Insets(5,0,5,0);
         pieces.setValue(getPieceNum());
         innerPane.add(pieces,c);
-        c.gridx = 1;
-        c.gridy = 5;
+        
+        c.gridx = 0;
+        c.gridy = 6;
         c.gridwidth = 3;
-        c.insets = new Insets(20,10,15,20);
+        c.insets = new Insets(20,0,15,130);
         innerPane.add(boardButton,c);
         boardButton.addActionListener(this);
+        
+        c.gridx=2;
+        c.gridy=6;
+        c.insets = new Insets(20,50,15,0);
+        deleteButton.setForeground(Color.red);
+        deleteButton.addActionListener(this);
+        innerPane.add(deleteButton, c);
+        
         innerPane.setBorder(borderBlack);
         c.gridx = 0;
         c.gridy = 2;
@@ -219,8 +248,8 @@ public class ModifyGameDesign implements ActionListener {
         c.gridx = 0;
         c.gridy = 3;
         c.insets = new Insets(0,30,20,350);
-        window.add(backButton, c);
-        backButton.addActionListener(this);
+        window.add(createNewButton, c);
+        createNewButton.addActionListener(this);
         c.gridx = 2;
         c.gridy = 3;
         c.insets = new Insets(0,30,20,30);
@@ -238,11 +267,16 @@ public class ModifyGameDesign implements ActionListener {
             lg.run();
             
         }
-        else if(ae.getSource() == backButton){
+        else if(ae.getSource()== logout)
+        {
+        	window.dispose();
+        	Login lg = new Login();
+        	lg.run();
+        }
+        else if(ae.getSource() == createNewButton){
             //take back to main menu screen
-            window.dispose();//setVisible(false);
-            GameDesignerMain game = new GameDesignerMain();
-            game.run();
+            //setVisible(false);
+           
         }
         else if(ae.getSource() == boardButton){
             //take to board where you can edit which squares are blocked
