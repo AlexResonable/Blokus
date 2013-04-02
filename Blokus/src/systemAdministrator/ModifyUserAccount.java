@@ -152,12 +152,15 @@ public class ModifyUserAccount extends JPanel implements ActionListener
             innerPane.add(textPane);
             textPane.setBounds(50, 45, 300, 80);
 
+            innerPane.add(errorField);
+            errorField.setBounds(45, 125, 300, 15 );
+            
             innerPane.add(radioButtonPane);
-            radioButtonPane.setBounds(65, 135, 330, 50);
+            radioButtonPane.setBounds(65, 145, 330, 50);
 
             innerPane.add(deleteButton);
             deleteButton.setForeground(Color.red);
-            deleteButton.setBounds(300, 190, 90, 30);
+            deleteButton.setBounds(300, 200, 90, 30);
             
             // add header, innerpane, "back" button
             add(header);
@@ -186,7 +189,8 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                     gameDesignerButton.setEnabled(false);
                     systemAdministratorButton.setEnabled(false);
                     deleteButton.setEnabled(false);
-                    newButton.setEnabled(false);
+                    newButton.setEnabled(true);
+                    saveButton.setEnabled(false);
                 }
                 else{
                     User userInfo = new User();
@@ -195,12 +199,13 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                     userNameField.setEnabled(true);
                     passwordField.setText(userInfo.getPassword());
                     passwordField.setEnabled(true);
-                    confirmPasswordField.setText(userInfo.getRole());
+                    confirmPasswordField.setText(userInfo.getPassword());
                     confirmPasswordField.setEnabled(true);
                     gameDesignerButton.setEnabled(true);
                     systemAdministratorButton.setEnabled(true);
                     newButton.setEnabled(true);
                     deleteButton.setEnabled(true);
+                    saveButton.setEnabled(true);
                     if(userInfo.getRole().equals("SA")){
                         systemAdministratorButton.setSelected(true);
                     }
@@ -231,6 +236,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                 else{
                     User temp = new User(oldUsername, pw, role);
                     User saved = lf.updateUser(temp, userName);
+                    System.out.println(saved.getUsername());
                     if(saved.getUsername().equals(userName)){
                         if(!oldUsername.equals(userName))
                         {
@@ -243,7 +249,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                         errorField.setText("<HTML><FONT COLOR = Green>" + saved.getUsername() + " has been saved!</FONT></HTML>");
                     }
                     else{
-                        errorField.setText("<HTML><FONT COLOR = Red>" + saved.getUsername() + " has not been saved!</FONT></HTML>");
+                        errorField.setText("<HTML><FONT COLOR = Red>User has not been saved!</FONT></HTML>");
                     }
                 }
             }
@@ -317,27 +323,3 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 	}
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
