@@ -9,6 +9,7 @@ import java.awt.Container;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -150,14 +151,12 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 
             innerPane.add(textPane);
             textPane.setBounds(50, 45, 300, 80);
-            
-            innerPane.add(errorField);
-            errorField.setBounds(35, 125, 300, 15);
 
             innerPane.add(radioButtonPane);
-            radioButtonPane.setBounds(65, 145, 330, 50);
+            radioButtonPane.setBounds(65, 135, 330, 50);
 
             innerPane.add(deleteButton);
+            deleteButton.setForeground(Color.red);
             deleteButton.setBounds(300, 190, 90, 30);
             
             // add header, innerpane, "back" button
@@ -187,7 +186,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                     gameDesignerButton.setEnabled(false);
                     systemAdministratorButton.setEnabled(false);
                     deleteButton.setEnabled(false);
-                    newButton.setEnabled(true);
+                    newButton.setEnabled(false);
                 }
                 else{
                     User userInfo = new User();
@@ -196,13 +195,12 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                     userNameField.setEnabled(true);
                     passwordField.setText(userInfo.getPassword());
                     passwordField.setEnabled(true);
-                    confirmPasswordField.setText(userInfo.getPassword());
+                    confirmPasswordField.setText(userInfo.getRole());
                     confirmPasswordField.setEnabled(true);
                     gameDesignerButton.setEnabled(true);
                     systemAdministratorButton.setEnabled(true);
                     newButton.setEnabled(true);
                     deleteButton.setEnabled(true);
-                    saveButton.setEnabled(true);
                     if(userInfo.getRole().equals("SA")){
                         systemAdministratorButton.setSelected(true);
                     }
@@ -285,8 +283,8 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 	public static void showUserManagementGUI()
 	{
 		frame = new JFrame("MANAGE USER ACCOUNT");
-		frame.setSize(500, 370); //window size
-		frame.setLocation((width -600)/2,(height-500)/2); //window location
+		frame.setSize(500, 380); //window size
+		frame.setLocation((width -500)/2,(height-380)/2); //window location
 		frame.setResizable(false); // fix window size
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// close window, program close
 		

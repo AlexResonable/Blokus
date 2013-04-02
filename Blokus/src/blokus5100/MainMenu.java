@@ -126,11 +126,11 @@ public class MainMenu extends JPanel
         
 		// add three parts into mainPanel
 		add(gameTitle);
-		gameTitle.setBounds(100,50,600, 100);
+		gameTitle.setBounds(10,30,600, 40);
 		add(copyRight);
-		copyRight.setBounds(310, 120, 200, 100);
+		copyRight.setBounds(200, 80, 200, 100);
 		add(buttonPanel);
-		buttonPanel.setBounds(300,230,300,318);
+		buttonPanel.setBounds(200,200,300,318);
 
 		
 	}
@@ -138,8 +138,8 @@ public class MainMenu extends JPanel
 	public static void createAndShowGUI()
 	{
 		frame = new JFrame("BLOKUS MAIN MENU");
-		frame.setSize(800, 800);
-		frame.setLocation((width -800)/2,(height-800)/2); 
+		frame.setSize(600, 650);
+		frame.setLocation((width -600)/2,(height-650)/2); 
 		frame.setResizable(false); 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLayout(null);

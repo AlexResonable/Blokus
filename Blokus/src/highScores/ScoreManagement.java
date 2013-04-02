@@ -34,10 +34,9 @@ public class ScoreManagement extends JPanel implements ListSelectionListener
 	public ScoreManagement()
 	{
 		this.setLayout(null);
-		this.setBackground(Color.white);
 		
-		listTitle = new JLabel("Hight Scores List");
-		listTitle.setFont(new Font("Comic Sans MS", Font.BOLD, 18));
+		listTitle = new JLabel("Hight Scores");
+		listTitle.setFont(new Font("Arial", Font.PLAIN, 24));
 		listModel = new DefaultListModel();
 		listModel.addElement("player 1     100");
 		listModel.addElement("player 2     85");// add the player object here.
@@ -58,19 +57,10 @@ public class ScoreManagement extends JPanel implements ListSelectionListener
 		JPanel listPane = new JPanel();
 		
 		deleteButton = new JButton("Delete");
-		deleteButton.setFont(new Font("Bodoni MT Black", Font.BOLD, 16));
-		deleteButton.setHorizontalAlignment(deleteButton.CENTER);
-		deleteButton.setBackground(Color.white);
 		
 		clearAllButton = new JButton("Clear All");
-		clearAllButton.setFont(new Font("Bodoni MT Black", Font.BOLD, 16));
-		clearAllButton.setHorizontalAlignment(clearAllButton.LEFT);
-		clearAllButton.setBackground(Color.white);
 		
 		backButton = new JButton("Back");
-		backButton.setFont(new Font("Bodoni MT Black", Font.BOLD, 16));
-		backButton.setHorizontalAlignment(deleteButton.CENTER);
-		backButton.setBackground(Color.white);
 		backButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e)
 			{
@@ -80,29 +70,29 @@ public class ScoreManagement extends JPanel implements ListSelectionListener
 			}
 		});
 		
-		JPanel buttonPane = new JPanel();
-		buttonPane.setBackground(Color.white);
-		buttonPane.setLayout(null);
-		buttonPane.add(deleteButton);
-		deleteButton.setBounds(0, 0, 100, 45);
-		buttonPane.add(clearAllButton);
-		clearAllButton.setBounds(180, 0, 120, 45);
 		
 		add(listTitle);
-		listTitle.setBounds(130,40,250,30);
+		listTitle.setBounds(150,40,250,30);
 		add(listPane);
 		listPane.setBounds(100, 100, 250, 320);
-		add(buttonPane);
-		buttonPane.setBounds(60, 480, 500, 60);
+		
+		
 		add(backButton);
-		backButton.setBounds(350, 20, 80, 30);
+		backButton.setBounds(50, 470, 80, 30);
+		add(deleteButton);
+		deleteButton.setBounds(150, 470, 100, 30);
+		deleteButton.setForeground(Color.red);
+		add(clearAllButton);
+		clearAllButton.setBounds(270, 470, 120, 30);
+		clearAllButton.setForeground(Color.red);
+		
 	}
 	
 	public static void showScoreManagementGUI()
 	{
 		frame = new JFrame("MANAGE USER ACCOUNT");
-		frame.setSize(470, 600); //window size
-		frame.setLocation((width -470)/2,(height-600)/2); //window location
+		frame.setSize(440, 600); //window size
+		frame.setLocation((width -440)/2,(height-600)/2); //window location
 		frame.setResizable(false); // fix window size
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// close window, program close
 		
