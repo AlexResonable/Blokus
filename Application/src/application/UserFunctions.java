@@ -113,23 +113,24 @@ public class UserFunctions {
     }
     
     public User updateUser(User user, String username){
+        User userInfo = new User();
         Connection conn = null;
         Statement stat = null;
         ResultSet rs = null;
-        String name = user.getUsername();
-        String pw = user.getPassword();
-        String rl = user.getRole();
+        userInfo.setUsername(username);
+        userInfo.setPassword(user.getPassword());
+        userInfo.setRole(user.getRole());
         try {
             conn = Database.ConnectDB();
             stat = conn.createStatement();
-            rs = stat.executeQuery("SELECT * FROM users WHERE username = '" + name + "';");
+            rs = stat.executeQuery("SELECT * FROM users WHERE username = '" + userInfo.getUsername() + "';");
 
             if(!rs.next()){
-                stat.executeUpdate("INSERT INTO users (username,password,role) VALUES ('" + username + "','" + pw + "','"+ rl +"')");
+                stat.executeUpdate("INSERT INTO users (username,password,role) VALUES ('" + username + "','" + userInfo.getPassword() + "','"+ userInfo.getRole() +"')");
                 conn.setAutoCommit(true);
             }
             else{
-                stat.executeUpdate("UPDATE users SET username = '" + username + "', password = '" + pw + "', role = '" + rl + "' WHERE username = '" + name + "'");
+                stat.executeUpdate("UPDATE users SET username = '" + username + "', password = '" + userInfo.getPassword() + "', role = '" + userInfo.getRole() + "' WHERE username = '" + userInfo.getUsername() + "'");
                 conn.setAutoCommit(true);
             }
             rs.close();
@@ -148,7 +149,7 @@ public class UserFunctions {
             user.setUsername("");
             return null;
         }  
-        return user;
+        return userInfo;
     }
     
     public Boolean deleteUser(String username){
