@@ -51,6 +51,12 @@ public class Login implements ActionListener {
     
     private void createLogin()
     {
+    	backButton.setName("Back");
+    	loginButton.setName("Login");
+    	header.setName("User Login");
+    	errorField.setName("error message");
+    	usernameField.setName("UserName");
+    	passwordField.setName("Password");
         window.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -141,6 +147,11 @@ public class Login implements ActionListener {
                 errorField.setText("<HTML><FONT COLOR = Red>Username and password must be valid</FONT></HTML>");
         }
         
+    }
+    
+    public JFrame getWindow()
+    {
+    	return window;
     }
     
 }
