@@ -35,6 +35,7 @@ public class ModifyGameDesign implements ActionListener {
     private JLabel header = new JLabel("Modify Game Board");
     
     private JComboBox gameList = new JComboBox();
+    private JComboBox difficultList = new JComboBox();
     
     private JButton logout = new JButton("Logout");
     private SpinnerModel gameSizeModel = new SpinnerNumberModel(getSizeX(), 20, 100, 10);
@@ -152,19 +153,24 @@ public class ModifyGameDesign implements ActionListener {
         innerPane.setLayout(new GridBagLayout());
         c.gridx = 0;
         c.gridy = 0;
-        c.gridwidth =1;
+        c.gridwidth =2;
         c.insets = new Insets(15,20,5,0);
         innerPane.add(new JLabel("Choose Designed Game "),c);
        
        
-        
         c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(15,0,5,0);
         innerPane.add(gameList);
         
+        c.gridx = 2;
+        c.gridy =0;
+        c.insets = new Insets(15, 0, 5, 0);
+        innerPane.add(difficultList);
+        
         c.gridx = 0;
         c.gridy = 1;
+        c.gridwidth =1;
         c.insets = new Insets(15,20,5,20);
         innerPane.add(new JLabel("Game Board Size "),c);
         
