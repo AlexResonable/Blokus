@@ -87,6 +87,7 @@ public final class PreviewBoard implements ActionListener {
         c.gridy = this.getSizeY()+1;
         c.gridwidth = this.getSizeX()/2;
         window.add(backGame, c);
+        backGame.setName("Back");
         backGame.addActionListener(this);
         window.pack();
     }
@@ -150,5 +151,10 @@ public final class PreviewBoard implements ActionListener {
             GameWizard back = new GameWizard();
             back.run();
         }
+    }
+    
+    public JFrame getFrame()
+    {
+    	return window;
     }
 }

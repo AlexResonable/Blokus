@@ -15,8 +15,8 @@ import javax.swing.JOptionPane;
 
 public final class EditBoard implements ActionListener {    
     private setBoard eBoard = new setBoard();
-    private int sizeX = 100;
-    private int sizeY = 100;
+    private int sizeX = 20;
+    private int sizeY = 20;
     private int elements[][] = new int[sizeX][sizeY];
     private JButton buttons[][] = new JButton[sizeX][sizeY];
     private JFrame window = new JFrame("Edit Blokus Board");
@@ -58,6 +58,7 @@ public final class EditBoard implements ActionListener {
         for(int i=0; i < sizeX; i++){
             for(int j=0; j < sizeY; j++){
                 buttons[i][j] = new JButton();
+                buttons[i][j].setName("i"+i+" j"+j);
                 elements[i][j] = 0;
             }
         }
@@ -103,9 +104,11 @@ public final class EditBoard implements ActionListener {
         c.gridy = this.getSizeY()+1;
         c.gridwidth = this.getSizeX()/2;
         window.add(backGame, c);
+        backGame.setName("Back");
         backGame.addActionListener(this);
         c.gridx = this.getSizeX()-this.getSizeX()/2;
         c.gridy = this.getSizeY()+1;
+        saveGame.setName("Save");
         window.add(saveGame, c);
         saveGame.addActionListener(this);
         window.pack();
@@ -241,5 +244,10 @@ public final class EditBoard implements ActionListener {
                 }
             }
         }
+    }
+    
+    public JFrame getFrame()
+    {
+    	return window;
     }
 }

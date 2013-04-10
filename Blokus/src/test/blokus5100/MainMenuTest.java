@@ -5,50 +5,69 @@
 package test.blokus5100;
 
 import javax.swing.ImageIcon;
+
+import org.fest.swing.fixture.FrameFixture;
 import org.junit.AfterClass;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import blokus5100.MainMenu;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author kamijean
- */
 public class MainMenuTest {
     
-    public MainMenuTest() {
-    }
-
-    /**
-     * Test of createAndShowGUI method, of class MainMenu.
-     */
-    @Test
-    public void testCreateAndShowGUI() {
-        System.out.println("createAndShowGUI");
-        MainMenu.createAndShowGUI();
-    }
-
-    /**
-     * Test of createImageIcon method, of class MainMenu.
-     */
-//    @Test
-//    public void testCreateImageIcon() {
-//        System.out.println("createImageIcon");
-//        String path = "";
-//        ImageIcon expResult = null;
-//        ImageIcon result = MainMenu.createImageIcon(path);
-//        assertEquals(expResult, result);
-//    }
-
-    /**
-     * Test of main method, of class MainMenu.
-     */
-    @Test
-    public void testMain() {
-        System.out.println("main");
-        String[] args = null;
-        MainMenu.main(args);
-    }
+  private static FrameFixture mainFrame;
+  private static MainMenu mainInstance;
+  
+  @BeforeClass
+  public static void beforeTests()
+  {
+	  mainInstance = new MainMenu();
+	  mainInstance.createAndShowGUI();
+	  mainFrame = new FrameFixture(mainInstance.getFrame());
+  }
+  
+  @Before
+  public void beforeTest()
+  {
+	  mainFrame.show();
+  }
+  
+  @Test
+  public void testLabels()
+  {
+	  mainFrame.label("BLOCKUS GAME");
+	  mainFrame.label("by The Dream Team");
+  }
+  
+  @Test
+  public void testPlayButton()
+  {
+	  mainFrame.button("PLAY").click();
+  }
+  
+  @Test
+  public void testInstructionButton()
+  {
+	  mainFrame.button("Instruction").click();
+  }
+  
+  @Test
+  public void testLogInButton()
+  {
+	  mainFrame.button("LOG IN").click();
+  }
+  
+  @Test
+  public void testHighScoreButton()
+  {
+	  mainFrame.button("HIGH SCORES").click();
+  }
+  
+  @Test
+  public void testExitButton()
+  {
+	  mainFrame.button("EXIT").click();
+  }
 }

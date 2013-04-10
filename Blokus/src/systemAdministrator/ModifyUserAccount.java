@@ -54,9 +54,11 @@ public class ModifyUserAccount extends JPanel implements ActionListener
             this.setLayout(null);
 		
             header = new JLabel("Modify User Account");
+            header.setName("Modify User Account");
             header.setFont(new Font("Arial", Font.PLAIN, 24));
 
             comboBoxLabel = new JLabel("Choose Account:");
+            comboBoxLabel.setName("Choose Account:");
             HashMap<String, String> users = lf.getUsernames();
             ArrayList currentUserList = new ArrayList();
             currentUserList.add("");
@@ -67,42 +69,53 @@ public class ModifyUserAccount extends JPanel implements ActionListener
                 ++i;
             }
             userList = new JComboBox(currentUserList.toArray());
+            userList.setName("User List");
             userList.setOpaque(true);
             userList.addActionListener(this);
 
             newButton = new JButton("New");
+            newButton.setName("New");
             newButton.addActionListener(this);
             newButton.setEnabled(true);
             
             deleteButton = new JButton("Delete");
+            deleteButton.setName("Delete");
             deleteButton.addActionListener(this);
             deleteButton.setEnabled(false);
 
             saveButton = new JButton("Save");
+            saveButton.setName("Save");
             saveButton.addActionListener(this);
             saveButton.setEnabled(false);
 
             backButton = new JButton("Back");
+            backButton.setName("Back");
             backButton.addActionListener(this);
 
             // user name field
             userNameField = new JTextField(10);
+            userNameField.setName("UserName");
             userNameField.setActionCommand(userNameText);
             userNameField.setEnabled(false);
             JLabel userNameLabel = new JLabel("User Name: ");
+            userNameLabel.setName("User Name: ");
             userNameLabel.setLabelFor(userNameField);
 
             // password field
             passwordField = new JPasswordField(10);
+            passwordField.setName("Password");
             passwordField.setEnabled(false);
             errorField.setEnabled(false);
             JLabel passwordLabel = new JLabel("Password: ");
+            passwordLabel.setName("Password: ");
             passwordLabel.setLabelFor(passwordField);
 
             // confirm password field
             confirmPasswordField = new JPasswordField(10);
+            confirmPasswordField.setName("Confirm");
             confirmPasswordField.setEnabled(false);
             JLabel confirmPasswordLabel = new JLabel("Confirm Password: ");
+            confirmPasswordLabel.setName("Confirm Password: ");
             confirmPasswordLabel.setLabelFor(confirmPasswordField);
             // add fields and their label together
             JPanel textPane = new JPanel();
@@ -115,12 +128,14 @@ public class ModifyUserAccount extends JPanel implements ActionListener
             addLabelTextRows(labels, textFields, gridbag, textPane);
             // Radio button "game designer"
             gameDesignerButton = new JRadioButton("Game Designer");
+            gameDesignerButton.setName("gameDesigner");
             gameDesignerButton.setSelected(true);
             gameDesignerButton.addActionListener(this);
             gameDesignerButton.setEnabled(false);
 
             // Radio button "system administrator"
             systemAdministratorButton = new JRadioButton("System Administrator");
+            systemAdministratorButton.setName("systemAdmin");
             systemAdministratorButton.addActionListener(this);
             systemAdministratorButton.setEnabled(false);
 
@@ -320,6 +335,11 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 			container.add(textFields[i],c);
 		}
                 
+	}
+	
+	public JFrame  getFrame()
+	{
+		return frame;
 	}
 
 }

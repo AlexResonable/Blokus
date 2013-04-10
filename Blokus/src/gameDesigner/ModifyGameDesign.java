@@ -137,6 +137,7 @@ public class ModifyGameDesign implements ActionListener {
         c.gridy = 0;
         c.gridwidth = 2;
         c.insets = new Insets(10,40,0,60);
+        header.setName("Modify Game Board");
         header.setFont(new Font("Arial", Font.PLAIN, 24));
         window.add(header, c);
         
@@ -147,6 +148,7 @@ public class ModifyGameDesign implements ActionListener {
         logout.setBorderPainted(false);
         logout.setForeground(Color.blue);
         logout.addActionListener(this);
+        logout.setName("Logout");
         window.add(logout, c);
         
         Border borderBlack = BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.lightGray, Color.blue);
@@ -155,8 +157,10 @@ public class ModifyGameDesign implements ActionListener {
         c.gridy = 0;
         c.gridwidth =2;
         c.insets = new Insets(15,20,5,0);
-        innerPane.add(new JLabel("Choose Designed Game "),c);
-       
+        JLabel j1 = new JLabel("Choose Designed Game ");
+        j1.setName("Choose Designed Game ");
+        innerPane.add(j1,c);
+        
        
         c.gridx = 1;
         c.gridy = 0;
@@ -172,61 +176,79 @@ public class ModifyGameDesign implements ActionListener {
         c.gridy = 1;
         c.gridwidth =1;
         c.insets = new Insets(15,20,5,20);
-        innerPane.add(new JLabel("Game Board Size "),c);
+        JLabel j2 = new JLabel("Game Board Size ");
+        j2.setName("Game Board Size ");
+        innerPane.add(j2,c);
         
         c.gridx = 1;
         c.gridy = 1;
         c.insets = new Insets(15,0,5,0);
         size1.setValue(getSizeX());
+        size1.setName("game size1");
         innerPane.add(size1,c);
         
         
         c.gridx = 2;
         c.gridy = 1;
-        innerPane.add(new JLabel("  x  "),c);
+        JLabel j3 = new JLabel("  x  ");
+        j3.setName("  x  ");
+        innerPane.add(j3,c);
         
         c.gridx = 3;
         c.gridy = 1;
         c.insets = new Insets(15,0,5,10);
         size2.setValue(getSizeY());
+        size2.setName("game size2");
         innerPane.add(size2,c);
         
         c.gridx = 0;
         c.gridy = 2;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Number of Players "),c);
+        JLabel j4 = new JLabel("Number of Players ");
+        j4.setName("Number of Players ");
+        innerPane.add(j4,c);
         c.gridx = 1;
         c.gridy = 2;
         c.insets = new Insets(5,0,5,0);
+        players.setName("player numbers");
         players.setValue(getPlayerNum());
         innerPane.add(players,c);
         
         c.gridx = 0;
         c.gridy = 3;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Turn Time (seconds) "),c);
+        JLabel j5 = new JLabel("Turn Time (seconds) ");
+        j5.setName("Turn Time (seconds) ");
+        innerPane.add(j5,c);
         c.gridx = 1;
         c.gridy = 3;
         c.insets = new Insets(5,0,5,0);
         turnTime.setValue(getTurnNum());
+        turnTime.setName("turnTime");
         innerPane.add(turnTime,c);
         c.gridx = 0;
         c.gridy = 4;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Game Time (minutes)"),c);
+        JLabel j6 = new JLabel("Game Time (minutes)");
+        j6.setName("Game Time (minutes)");
+        innerPane.add(j6,c);
         c.gridx = 1;
         c.gridy = 4;
         c.insets = new Insets(5,0,5,0);
+        gameTime.setName("GameTime");
         gameTime.setValue(getGameNum());
         innerPane.add(gameTime,c);
         
         c.gridx = 0;
         c.gridy = 5;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Number of Pieces"),c);
+        JLabel j7 = new JLabel("Number of Pieces");
+        j7.setName("Number of Pieces");
+        innerPane.add(j7,c);
         c.gridx = 1;
         c.gridy = 5;
         c.insets = new Insets(5,0,5,0);
+        pieces.setName("pieces numbers");
         pieces.setValue(getPieceNum());
         innerPane.add(pieces,c);
         
@@ -235,11 +257,13 @@ public class ModifyGameDesign implements ActionListener {
         c.gridwidth = 3;
         c.insets = new Insets(20,0,15,130);
         innerPane.add(boardButton,c);
+        boardButton.setName("Edit Board");
         boardButton.addActionListener(this);
         
         c.gridx=2;
         c.gridy=6;
         c.insets = new Insets(20,50,15,0);
+        deleteButton.setName("Delete");
         deleteButton.setForeground(Color.red);
         deleteButton.addActionListener(this);
         innerPane.add(deleteButton, c);
@@ -255,10 +279,12 @@ public class ModifyGameDesign implements ActionListener {
         c.gridy = 3;
         c.insets = new Insets(0,30,20,350);
         window.add(createNewButton, c);
+        createNewButton.setName("New");
         createNewButton.addActionListener(this);
         c.gridx = 2;
         c.gridy = 3;
         c.insets = new Insets(0,30,20,30);
+        saveButton.setName("Save");
         window.add(saveButton, c);
         saveButton.addActionListener(this);
         window.pack();
@@ -304,4 +330,8 @@ public class ModifyGameDesign implements ActionListener {
         }
     }
     
+    public JFrame getWindow()
+    {
+    	return window;
+    }
 }
