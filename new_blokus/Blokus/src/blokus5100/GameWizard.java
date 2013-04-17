@@ -33,17 +33,23 @@ public class GameWizard implements ActionListener
     private JLabel p2 = new JLabel("Name of Player 2: ");
     private JLabel p3 = new JLabel("Name of Player 3: ");
     private JLabel p4 = new JLabel("Name of Player 4: "); 
-    JRadioButton easy = new JRadioButton("Easy");
-    JRadioButton medium = new JRadioButton("Medium");
-    JRadioButton hard = new JRadioButton("Hard");
+    private JRadioButton easy = new JRadioButton("Easy");
+    private JRadioButton medium = new JRadioButton("Medium");
+    private JRadioButton hard = new JRadioButton("Hard");
     private JComboBox gameNames = new JComboBox();
-    DefaultComboBoxModel model = new DefaultComboBoxModel();  
+    private DefaultComboBoxModel model = new DefaultComboBoxModel();  
     private JButton boardButton = new JButton("Preview Board");
     private JButton backButton = new JButton("Back");
     private JButton playButton = new JButton("Play");
     private JPanel innerPane = new JPanel();
     private GameFunctions gf = new GameFunctions();
     private Game eBoard = new Game();
+    private JLabel turnLabel = new JLabel("Turn Time(seconds): ");
+    private JLabel turnTime = new JLabel();
+    private JLabel gameLabel = new JLabel("Game Time(minutes): ");
+    private JLabel gameTime = new JLabel();
+    private JLabel pieceLabel = new JLabel("Number of Pieces: ");
+    private JLabel pieces = new JLabel();
     
     public void run(Game game)
     {
@@ -193,7 +199,19 @@ public class GameWizard implements ActionListener
                     }
                     ++i;
                 }
-           
+                if(gameNames.getSelectedItem()!=null){
+                    String gameName = gameNames.getSelectedItem().toString();
+                    Game gameInfo = new Game();
+                    gameInfo = gf.getGameInfo(gameName);
+                    turnTime.setText(Integer.toString(gameInfo.getTurnTime()));
+                    gameTime.setText(Integer.toString(gameInfo.getGameTime()));
+                    pieces.setText(Integer.toString(gameInfo.getPieceNumber()));
+                }
+                else{
+                    turnTime.setText("");
+                    gameTime.setText("");
+                    pieces.setText("");
+                }
             }
         });
         
@@ -216,6 +234,19 @@ public class GameWizard implements ActionListener
                         location = i+1;
                     }
                     ++i;
+                }
+                if(gameNames.getSelectedItem()!=null){
+                    String gameName = gameNames.getSelectedItem().toString();
+                    Game gameInfo = new Game();
+                    gameInfo = gf.getGameInfo(gameName);
+                    turnTime.setText(Integer.toString(gameInfo.getTurnTime()));
+                    gameTime.setText(Integer.toString(gameInfo.getGameTime()));
+                    pieces.setText(Integer.toString(gameInfo.getPieceNumber()));
+                }
+                else{
+                    turnTime.setText("");
+                    gameTime.setText("");
+                    pieces.setText("");
                 }
             }
         });
@@ -241,6 +272,19 @@ public class GameWizard implements ActionListener
                     }
                     ++i;
                 }
+                if(gameNames.getSelectedItem()!=null){
+                    String gameName = gameNames.getSelectedItem().toString();
+                    Game gameInfo = new Game();
+                    gameInfo = gf.getGameInfo(gameName);
+                    turnTime.setText(Integer.toString(gameInfo.getTurnTime()));
+                    gameTime.setText(Integer.toString(gameInfo.getGameTime()));
+                    pieces.setText(Integer.toString(gameInfo.getPieceNumber()));
+                }
+                else{
+                    turnTime.setText("");
+                    gameTime.setText("");
+                    pieces.setText("");
+                }
             }
         });
         
@@ -255,6 +299,51 @@ public class GameWizard implements ActionListener
         c.gridwidth = 2;
         c.insets = new Insets(5,0,5,10);
         gameMode.add(gameNames,c);
+        gameNames.addActionListener(this);
+        
+        if(gameNames.getSelectedItem()!=null){
+            String gameName = gameNames.getSelectedItem().toString();
+            Game gameInfo = new Game();
+            gameInfo = gf.getGameInfo(gameName);
+            turnTime.setText(Integer.toString(gameInfo.getTurnTime()));
+            gameTime.setText(Integer.toString(gameInfo.getGameTime()));
+            pieces.setText(Integer.toString(gameInfo.getPieceNumber()));
+        }
+        else{
+            turnTime.setText("");
+            gameTime.setText("");
+            pieces.setText("");
+        }
+        c.gridx = 0;
+        c.gridy = 2;
+        c.gridwidth = 2;
+        c.insets = new Insets(5,0,5,20);
+        gameMode.add(turnLabel,c);
+        c.gridx = 1;
+        c.gridy = 2;
+        c.gridwidth = 1;
+        c.insets = new Insets(5,100,5,0);
+        gameMode.add(turnTime,c);
+        c.gridx = 0;
+        c.gridy = 3;
+        c.gridwidth = 2;
+        c.insets = new Insets(5,0,5,20);
+        gameMode.add(gameLabel,c);
+        c.gridx = 1;
+        c.gridy = 3;
+        c.gridwidth = 1;
+        c.insets = new Insets(5,100,5,0);
+        gameMode.add(gameTime,c);
+        c.gridx = 0;
+        c.gridy = 4;
+        c.gridwidth = 2;
+        c.insets = new Insets(5,0,5,20);
+        gameMode.add(pieceLabel,c);
+        c.gridx = 1;
+        c.gridy = 4;
+        c.gridwidth = 1;
+        c.insets = new Insets(5,100,5,0);
+        gameMode.add(pieces,c);
         
         // add "Game Mode" to inner panel
         c.gridx = 0;
@@ -312,6 +401,22 @@ public class GameWizard implements ActionListener
             //take back to main menu screen
             window.setVisible(false);
             MainMenu.createAndShowGUI();
+        }
+        else if(ae.getSource() == gameNames){
+            if(gameNames.getSelectedItem()!=null){
+                String game = gameNames.getSelectedItem().toString();
+                Game gameInfo = new Game();
+                gameInfo = gf.getGameInfo(game);
+                turnTime.setText(Integer.toString(gameInfo.getTurnTime()));
+                gameTime.setText(Integer.toString(gameInfo.getGameTime()));
+                pieces.setText(Integer.toString(gameInfo.getPieceNumber()));
+            }
+            else{
+                turnTime.setText("");
+                gameTime.setText("");
+                pieces.setText("");
+            }
+                 
         }
         else if(ae.getSource() == boardButton)
         {
