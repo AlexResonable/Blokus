@@ -23,37 +23,6 @@ public final class EditBoard implements ActionListener {
     private JFrame window = new JFrame("Edit Blokus Board");
     private JButton saveGame = new JButton("Save Board");
     private JButton backGame = new JButton("Back");
-
-    public JButton[][] getButtons() {
-        return buttons;
-    }
-
-    public void setButtons(JButton[][] buttons) {
-        this.buttons = buttons;
-    }
-
-    public int[][] getElements() {
-        return elements;
-    }
-
-    public void setElements(int[][] elements) {
-        this.elements = elements;
-    }
-
-    public int getSizeX() {
-        return this.sizeX;
-    }
-
-    public void setSizeX(int sizeX) {
-        this.sizeX = sizeX;
-    }
-    public int getSizeY() {
-        return this.sizeY;
-    }
-
-    public void setSizeY(int sizeY) {
-        this.sizeY = sizeY;
-    }
     
     public EditBoard(){
         for(int i=0; i < sizeX; i++){
@@ -82,14 +51,14 @@ public final class EditBoard implements ActionListener {
         }
         c.ipadx = 5;
         c.gridx = 0;
-        c.gridy = this.getSizeY()+1;
-        c.gridwidth = this.getSizeX()/2;
+        c.gridy = this.sizeX+1;
+        c.gridwidth = this.sizeX/2;
         window.add(backGame, c);
         backGame.setName("Back");
         backGame.setToolTipText("Back to Main Edit Game");
         backGame.addActionListener(this);
-        c.gridx = this.getSizeX()-this.getSizeX()/2;
-        c.gridy = this.getSizeY()+1;
+        c.gridx = this.sizeX-this.sizeX/2;
+        c.gridy = this.sizeY+1;
         saveGame.setName("Save"); 
         window.add(saveGame, c);
         saveGame.addActionListener(this);
@@ -100,11 +69,10 @@ public final class EditBoard implements ActionListener {
         eBoard = game;
         eBoard.setSizeX(game.getSizeX());
         eBoard.setSizeY(game.getSizeY());
-        System.out.println(game.getTurnTime() + " " + game.getGameTime());
-        System.out.println(eBoard.getTurnTime() + " " + eBoard.getGameTime());
-        this.setButtons(game.getButtons());
+        eBoard.setButtons(game.getButtons());
+        eBoard.setButtons(new JButton[eBoard.getSizeX()][eBoard.getSizeY()]);
+        eBoard.setElements(new int[eBoard.getSizeX()][eBoard.getSizeY()]);
         String myElements = gf.getElementGame(eBoard.getName());
-        elements = new int[this.getSizeX()][this.getSizeY()];
         char[] charArray;
         if(myElements != null){
             charArray = myElements.toCharArray();
@@ -115,11 +83,11 @@ public final class EditBoard implements ActionListener {
         
         int x=0, y=0;
         for(int i=0; i < charArray.length; i++){
-            if(y >= this.getSizeY()){
+            if(y >= eBoard.getSizeY()){
                 y = 0;
                 x++;
             }
-            if(x < this.getSizeX()){
+            if(x < eBoard.getSizeX()){
                 buttons[x][y] = new JButton("");
                 buttons[x][y].setEnabled(true);
                 elements[x][y] = Character.getNumericValue(charArray[i]);
@@ -133,25 +101,24 @@ public final class EditBoard implements ActionListener {
             }
         }
         
-        
         window.setLayout(new GridBagLayout());
         GridBagConstraints c = new GridBagConstraints();
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
         
-        if(sizeX==40){
+        if(eBoard.getSizeX()==40){
             c.ipady = 5;
         }
-        else if(sizeX==35){
+        else if(eBoard.getSizeX()==35){
             c.ipady = 6;
         }
-        else if(sizeX==30){
+        else if(eBoard.getSizeX()==30){
             c.ipady = 7;
         }
-        else if(sizeX==25){
+        else if(eBoard.getSizeX()==25){
             c.ipady = 8;
         }
-        else if(sizeX==20){
+        else if(eBoard.getSizeX()==20){
             c.ipady = 10;
         }
         c.ipadx = -10;
@@ -227,8 +194,8 @@ public final class EditBoard implements ActionListener {
            // game.run();
         }
         else{
-            for(int i = 0; i < getSizeX(); i++){
-                for(int j = 0; j < getSizeY(); j++){
+            for(int i = 0; i < eBoard.getSizeX(); i++){
+                for(int j = 0; j < eBoard.getSizeY(); j++){
                     if (ae.getSource() == buttons[i][j]) {
                         if(elements[i][j] == 1){
                             buttons[i][j].setBackground(null);
