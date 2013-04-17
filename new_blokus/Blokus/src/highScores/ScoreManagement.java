@@ -40,13 +40,12 @@ import systemAdministrator.SystemAdministratorMain;
 
             title = new JLabel("Top Ten High Scores", SwingConstants.CENTER);
             title.setFont(new Font("Arial", Font.PLAIN, 24));
-
+            title.setName("Top Ten High Scores");
             add(title);
             title.setBounds(40, 20, 300, 30);
             for(i=0; i <SIZE; i++){
                 if(highScoresArray[i].getId() != -1)
                 {
-
                     currentScore = i+1 + ". " + highScoresArray[i].toString();
                     highScores[i]= new JLabel(currentScore, SwingConstants.LEFT);
 
@@ -62,7 +61,8 @@ import systemAdministrator.SystemAdministratorMain;
             repaint();
 
             backButton = new JButton("Back");
-
+            backButton.setToolTipText("Back to system administrator main page");
+            backButton.setName("Back");
             backButton.addActionListener( new ActionListener(){
                 @Override
                     public void actionPerformed(ActionEvent e){
@@ -75,7 +75,8 @@ import systemAdministrator.SystemAdministratorMain;
             });
 
             deleteAllButton = new JButton("Delete All");
-
+            deleteAllButton.setName("Delete All");
+            deleteAllButton.setToolTipText("Delete all exiting high score records");
             deleteAllButton.addActionListener(new ActionListener() {
 
                 @Override
@@ -92,7 +93,7 @@ import systemAdministrator.SystemAdministratorMain;
             add(panel);
             panel.setBounds(90, 40, 400, 400);
             add(backButton);
-            backButton.setBounds(100, 480, 100, 30);
+            backButton.setBounds(80, 480, 100, 30);
             add(deleteAllButton);
             deleteAllButton.setBounds(250, 480, 100, 30);
             
@@ -101,7 +102,7 @@ import systemAdministrator.SystemAdministratorMain;
         public void ShowHighScoresManagementGUI()
         {
             frame = new JFrame("High Scores Management");
-            frame.setSize(600, 650);
+            frame.setSize(420, 650);
             frame.setLocation((width - 600)/2, (height - 650)/2);
             frame.setResizable(false);
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

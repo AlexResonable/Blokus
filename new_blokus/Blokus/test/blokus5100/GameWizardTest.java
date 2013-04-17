@@ -2,7 +2,7 @@
 * To change this template, choose Tools | Templates
 * and open the template in the editor.
 */
-package blokus5100;
+package test.blokus5100;
 
 import models.Game;
 import java.awt.event.ActionEvent;
@@ -57,7 +57,7 @@ public class GameWizardTest {
     public void testComboBox()
     {
      gameWizardFrame.radioButton("easy").click();
-     gameWizardFrame.comboBox("game names").selectItem("Normal Game");
+     gameWizardFrame.comboBox("game names").selectItem("normal");
     }
     
     @Test

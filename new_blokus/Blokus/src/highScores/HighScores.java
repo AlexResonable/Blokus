@@ -14,7 +14,7 @@ public class HighScores extends JFrame{
 	private int height = 600;
 	private int width = 400;
 	private String currentLine;
-	private String file = "highscores.dat";
+	private String file = "highscores.txt";
 	private BufferedReader br;
 	private JLabel[] highScores= new JLabel[10];
 	private JLabel title;
@@ -33,7 +33,7 @@ public class HighScores extends JFrame{
 		pane.add(title);
 		title.setBounds(90, 20, 200, 30);
 		
-                File file = new File("highscore.txt");
+                File file = new File("highscores.txt");
                 System.out.println(file.getCanonicalPath());
 		br = new BufferedReader(new FileReader(file));
                 
@@ -51,9 +51,8 @@ public class HighScores extends JFrame{
 		setVisible(true);
 		
 		backButton = new JButton("Back");
-		backButton.setFont(new Font("Bodoni MT Black", Font.BOLD, 16));
-		backButton.setBackground(Color.white);
-		backButton.setBorder(BorderFactory.createLineBorder(Color.gray, 2));
+
+		backButton.setToolTipText("Back to main menu");
 		backButton.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				fm.dispose();
