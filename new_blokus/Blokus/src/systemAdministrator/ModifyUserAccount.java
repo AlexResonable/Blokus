@@ -70,6 +70,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
             }
             userList = new JComboBox(currentUserList.toArray());
             userList.setName("User List"); 
+            userList.setToolTipText("Select user to modify");
             userList.setOpaque(true);
             userList.addActionListener(this);
 
@@ -90,12 +91,14 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 
             backButton = new JButton("Back");
             backButton.setName("Back"); 
+            backButton.setToolTipText("Back to Game Settings");
             backButton.addActionListener(this);
 
             // user name field
             userNameField = new JTextField(10);
             userNameField.setName("UserName"); 
             userNameField.setActionCommand(userNameText);
+            userNameField.setToolTipText("Enter username");
             userNameField.setEnabled(false); 
             JLabel userNameLabel = new JLabel("User Name: ");
             userNameLabel.setName("User Name: ");
@@ -105,6 +108,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
             passwordField = new JPasswordField(10);
             passwordField.setName("Password"); 
             passwordField.setEnabled(false);
+            passwordField.setToolTipText("Enter password");
             errorField.setEnabled(false);
             JLabel passwordLabel = new JLabel("Password: ");
             passwordLabel.setName("Password: "); 
@@ -114,6 +118,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
             confirmPasswordField = new JPasswordField(10);
             confirmPasswordField.setEnabled(false);
             confirmPasswordField.setName("Confirm"); 
+            confirmPasswordField.setToolTipText("Enter same password");
             JLabel confirmPasswordLabel = new JLabel("Confirm Password: ");
             confirmPasswordLabel.setName("Confirm Password: "); 
             confirmPasswordLabel.setLabelFor(confirmPasswordField);
@@ -128,6 +133,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
             addLabelTextRows(labels, textFields, gridbag, textPane);
             // Radio button "game designer"
             gameDesignerButton = new JRadioButton("Game Designer");
+            gameDesignerButton.setToolTipText("Select if user will design the games");
             gameDesignerButton.setName("gameDesigner");
             gameDesignerButton.setSelected(true);
             gameDesignerButton.addActionListener(this);
@@ -135,6 +141,7 @@ public class ModifyUserAccount extends JPanel implements ActionListener
 
             // Radio button "system administrator"
             systemAdministratorButton = new JRadioButton("System Administrator");
+            systemAdministratorButton.setToolTipText("Select if user will be an administrator");
             systemAdministratorButton.setName("systemAdmin"); 
             systemAdministratorButton.addActionListener(this);
             systemAdministratorButton.setEnabled(false);

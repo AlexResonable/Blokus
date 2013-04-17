@@ -46,6 +46,7 @@ public class MainMenu extends JPanel
 		
 		// "Play" button
 		b1 = new JButton("PLAY");
+                b1.setToolTipText("Click to play game");
                 b1.setName("PLAY"); 
 		b1.addActionListener( new ActionListener()
 		{
@@ -59,6 +60,7 @@ public class MainMenu extends JPanel
 		
 		//"Instruction button"
 		b2 = new JButton("HOW TO PLAY");
+                b2.setToolTipText("Click for instructions");
                 b2.setName("Instruction");
 		b2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -74,6 +76,7 @@ public class MainMenu extends JPanel
 		
 		//"Log in button"
 		b3 = new JButton("LOG IN");
+                b3.setToolTipText("Click if you are a System or Design Admin");
                 b3.setName("LOG IN");
 		b3.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -86,6 +89,7 @@ public class MainMenu extends JPanel
 		
 		//"Exit" button
 		b4 = new JButton("EXIT");
+                b4.setToolTipText("Click to exit game");
                 b4.setName("EXIT");
 		b4.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
@@ -96,6 +100,7 @@ public class MainMenu extends JPanel
 		
 		//"High score" button
 		b5 = new JButton("HIGH SCORES");
+                b5.setToolTipText("Click to see highscores");
                 b5.setName("HIGH SCORES");
 		b5.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){

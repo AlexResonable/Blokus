@@ -75,6 +75,7 @@ public final class EditBoard implements ActionListener {
                 buttons[i][j].setOpaque(true);
                 c.gridx = i;
                 c.gridy = j;
+                buttons[i][j].setToolTipText("Click to block square in game");
                 window.add(buttons[i][j],c);
                 buttons[i][j].addActionListener(this);
             }
@@ -85,6 +86,7 @@ public final class EditBoard implements ActionListener {
         c.gridwidth = this.getSizeX()/2;
         window.add(backGame, c);
         backGame.setName("Back");
+        backGame.setToolTipText("Back to Main Edit Game");
         backGame.addActionListener(this);
         c.gridx = this.getSizeX()-this.getSizeX()/2;
         c.gridy = this.getSizeY()+1;

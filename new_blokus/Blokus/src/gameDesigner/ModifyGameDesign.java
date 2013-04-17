@@ -42,7 +42,7 @@ public class ModifyGameDesign implements ActionListener {
     private SpinnerModel gameSizeModel = new SpinnerNumberModel(20, 20, 40, 5);
     private JSpinner size1 = new JSpinner(gameSizeModel);
     private JSpinner size2 = new JSpinner(gameSizeModel);
-    private SpinnerModel turnModel = new SpinnerNumberModel(3, 3, 99, 1);
+    private SpinnerModel turnModel = new SpinnerNumberModel(10, 3, 99, 1);
     private JSpinner turnTime = new JSpinner(turnModel);
     private SpinnerModel gameModel = new SpinnerNumberModel(5, 5, 120, 1);
     private JSpinner gameTime = new JSpinner(gameModel);
@@ -108,6 +108,7 @@ public class ModifyGameDesign implements ActionListener {
         c.gridwidth = 1;
         c.insets = new Insets(15,30,5,0);
         JLabel j1 = new JLabel("Choose Game ");
+        j1.setToolTipText("Choose game to modify");
         j1.setName("Choose Designed Game ");
         innerPane.add(j1,c);
        
@@ -167,6 +168,7 @@ public class ModifyGameDesign implements ActionListener {
         c.gridwidth = 3;
         c.insets = new Insets(10,0,0,0);
         name.setEnabled(false);
+        name.setToolTipText("Type game name, can't be blank");
         innerPane.add(name,c);
         
         c.gridx = 0;
@@ -181,6 +183,7 @@ public class ModifyGameDesign implements ActionListener {
         c.gridy = 3;
         c.insets = new Insets(15,0,5,0);
         size1.setEnabled(false);
+        size1.setToolTipText("Choose a number from 20 to 40");
         JFormattedTextField txt = ((JSpinner.NumberEditor) size1.getEditor()).getTextField();
         ((NumberFormatter) txt.getFormatter()).setAllowsInvalid(false);
         innerPane.add(size1,c);
@@ -195,6 +198,7 @@ public class ModifyGameDesign implements ActionListener {
         c.gridy = 3;
         c.insets = new Insets(15,0,5,10);
         size2.setEnabled(false);
+        size1.setToolTipText("Choose a number from 20 to 40");
         JFormattedTextField txt2 = ((JSpinner.NumberEditor) size2.getEditor()).getTextField();
         ((NumberFormatter) txt2.getFormatter()).setAllowsInvalid(false);
         innerPane.add(size2,c);
@@ -209,6 +213,7 @@ public class ModifyGameDesign implements ActionListener {
         c.gridy = 4;
         c.insets = new Insets(5,0,5,0);
         turnTime.setEnabled(false);
+        turnTime.setToolTipText("Pick seconds from 3 to 99");
         JFormattedTextField txt3 = ((JSpinner.NumberEditor) turnTime.getEditor()).getTextField();
         ((NumberFormatter) txt3.getFormatter()).setAllowsInvalid(false);
         innerPane.add(turnTime,c);
@@ -220,6 +225,7 @@ public class ModifyGameDesign implements ActionListener {
         innerPane.add(j6,c);c.gridx = 1;
         c.gridy = 5;
         c.insets = new Insets(5,0,5,0);
+        gameTime.setToolTipText("Pick minutes from 5 to 120");
         JFormattedTextField txt4 = ((JSpinner.NumberEditor) gameTime.getEditor()).getTextField();
         ((NumberFormatter) txt4.getFormatter()).setAllowsInvalid(false);
         gameTime.setEnabled(false);
@@ -234,6 +240,7 @@ public class ModifyGameDesign implements ActionListener {
         c.gridx = 1;
         c.gridy = 6;
         c.insets = new Insets(5,0,5,0);
+        pieces.setToolTipText("Pick a number 21 to 42");
         JFormattedTextField txt5 = ((JSpinner.NumberEditor) gameTime.getEditor()).getTextField();
         ((NumberFormatter) txt5.getFormatter()).setAllowsInvalid(false);
         pieces.setEnabled(false);
@@ -244,12 +251,15 @@ public class ModifyGameDesign implements ActionListener {
         gameMode.setBorder(title);
         if(game.getMode() == 1){
              medium.setSelected(true);
+             medium.setToolTipText("Choose if game moderately easy");
         }
         else if(game.getMode() == 2){
              hard.setSelected(true);
+             hard.setToolTipText("Choose if game is challenging");
         }
         else{
              easy.setSelected(true);
+             easy.setToolTipText("Choose if game is easy");
         }
         mode.add(easy);
         mode.add(medium);
@@ -289,6 +299,7 @@ public class ModifyGameDesign implements ActionListener {
         c.insets = new Insets(20,0,15,130);
         innerPane.add(boardButton,c);
         boardButton.setEnabled(false);
+        boardButton.setToolTipText("Click here to block squares on board");
         boardButton.setName("Edit Board");
         boardButton.addActionListener(this);
         

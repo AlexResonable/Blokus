@@ -36,6 +36,7 @@ public class SystemAdministratorMain extends JPanel
 		
 		userButton = new JButton("User Management");
                 userButton.setName("User Management"); 
+                userButton.setToolTipText("Select to edit users");
 		userButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -45,6 +46,7 @@ public class SystemAdministratorMain extends JPanel
 		});
 		
 		scoreButton = new JButton("Score Management");
+                scoreButton.setToolTipText("Select to edit highscores");
                 scoreButton.setName("Score Management"); 
 		scoreButton.addActionListener(new ActionListener(){
 			public void actionPerformed (ActionEvent e){

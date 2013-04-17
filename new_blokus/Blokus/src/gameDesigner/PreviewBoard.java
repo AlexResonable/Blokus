@@ -158,6 +158,7 @@ public final class PreviewBoard implements ActionListener {
         c.gridy = game.getSizeY()+1;
         c.gridwidth = 10;
         window.add(backGame, c);
+        backGame.setToolTipText("Select to go back to game menu");
         backGame.addActionListener(this);
         window.pack();
     }

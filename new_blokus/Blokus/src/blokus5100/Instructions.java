@@ -45,6 +45,7 @@ import javax.swing.*;
 			// add "instruction content file"
 			br = new BufferedReader(new FileReader(file));
 			windowTF = new JTextArea(50, 50);
+                        windowTF.setToolTipText("Please read instructions carefully");
 			windowTF.setEditable(false);
 			windowTF.setSize(630, 750);
 			windowTF.setLocation(10, 70);
@@ -62,6 +63,7 @@ import javax.swing.*;
 			
 			// add "back" button
 			backButton = new JButton("Back");
+                        backButton.setToolTipText("Back to main menu");
 			backButton.addActionListener( new ActionListener()
 			{
 				public void actionPerformed(ActionEvent e)

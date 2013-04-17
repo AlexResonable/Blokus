@@ -94,6 +94,7 @@ public class GameWizard implements ActionListener
         c.insets = new Insets(15,0,5,0);
         innerPane.add(player1,c);
         player1.setName("Player1 Field");
+        player1.setToolTipText("Enter Player 1 Name");
         
         c.gridx = 0;
         c.gridy = 1;
@@ -105,6 +106,7 @@ public class GameWizard implements ActionListener
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player2,c);
         player2.setName("Player2 Field");
+        player2.setToolTipText("Enter Player 2 Name");
         
         c.gridx = 0;
         c.gridy = 2;
@@ -116,7 +118,7 @@ public class GameWizard implements ActionListener
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player3,c);
         player3.setName("Player3 Field"); 
-        player3.setToolTipText("Enter Player Name");
+        player3.setToolTipText("Enter Player 3 Name");
         
         c.gridx = 0;
         c.gridy = 3;
@@ -128,10 +130,12 @@ public class GameWizard implements ActionListener
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player4,c);
         player4.setName("Player4 Field");
+        player4.setToolTipText("Enter Player 4 Name");
         
         // "Game Model" field
         gameNames.setModel(model);
         gameNames.setName("game names");
+        gameNames.setToolTipText("Select game to play");
         JPanel gameMode = new JPanel(new GridBagLayout());
         TitledBorder title = BorderFactory.createTitledBorder("Game Mode");
         gameMode.setBorder(title);

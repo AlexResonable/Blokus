@@ -75,6 +75,7 @@ public class Login implements ActionListener {
         c.ipadx = 10;
         c.gridwidth = 2;
         c.insets = new Insets(10,0,10,40);
+        usernameField.setToolTipText("Type in username");
         window.add(usernameField, c);
         usernameField.addActionListener(this);
         c.gridx = 0;
@@ -89,6 +90,7 @@ public class Login implements ActionListener {
         c.ipady = 10;
         c.ipadx = 10;
         c.gridwidth = 2;
+        passwordField.setToolTipText("Type in password");
         c.insets = new Insets(0,0,20,40);
         window.add(passwordField, c);
         passwordField.addActionListener(this);
@@ -96,6 +98,7 @@ public class Login implements ActionListener {
         c.gridy = 4;
         c.gridwidth = 1;
         c.insets = new Insets(10,40,30,40);
+        backButton.setToolTipText("Back to Main Menu");
         window.add(backButton, c);
         backButton.addActionListener(this);
         c.gridx = 2;
