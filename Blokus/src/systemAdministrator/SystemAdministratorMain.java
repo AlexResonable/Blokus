@@ -27,13 +27,17 @@ public class SystemAdministratorMain extends JPanel
 	protected JLabel header;
 	protected JButton userButton, scoreButton, logoutButton ;
 	protected static JFrame frame;
+	
 	public SystemAdministratorMain()
 	{
 		this.setLayout(null);
+		
 		header = new JLabel("System Administrator Main");
+		header.setName("System Administrator Main");
 		header.setFont(new Font("Arial", Font.PLAIN, 24));
 		
 		userButton = new JButton("User Management");
+		userButton.setName("User Management");
 		userButton.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -43,6 +47,7 @@ public class SystemAdministratorMain extends JPanel
 		});
 		
 		scoreButton = new JButton("Score Management");
+		scoreButton.setName("Score Management");
 		scoreButton.addActionListener(new ActionListener(){
 			public void actionPerformed (ActionEvent e){
 				frame.dispose();
@@ -52,6 +57,7 @@ public class SystemAdministratorMain extends JPanel
 		});
 		
 		logoutButton = new JButton("Log out");
+		logoutButton.setName("Logout");
 		logoutButton.setContentAreaFilled(false);
         logoutButton.setBorderPainted(false);
         logoutButton.setForeground(Color.blue);
@@ -100,5 +106,9 @@ public class SystemAdministratorMain extends JPanel
 		frame.setContentPane(SAMainPanel);
 	}
 	
+	public JFrame getFrame()
+	{
+		return frame;
+	}
 
 }

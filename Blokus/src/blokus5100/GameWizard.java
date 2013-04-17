@@ -15,12 +15,16 @@ import javax.swing.border.Border;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
 
-import blokusGame.BlokusGame;
+import BlokusGame.BlokusGame;
 
 public class GameWizard implements ActionListener 
 {
     private JFrame window = new JFrame("Settings for Blokus"); 
     private JLabel header = new JLabel("Modify Settings");
+    private JLabel p1 = new JLabel("Name of Player 1: ");
+    private JLabel p2 = new JLabel("Name of Player 2: ");
+    private JLabel p3 = new JLabel("Name of Player 3: ");
+    private JLabel p4 = new JLabel("Name of Player 4: ");
     private JTextField player1 = new JTextField(15);
     private JTextField player2 = new JTextField(15);
     private JTextField player3 = new JTextField(15);
@@ -64,6 +68,7 @@ public class GameWizard implements ActionListener
         c.gridwidth = 2;
         c.insets = new Insets(10,40,0,0);
         header.setFont(new Font("Arial", Font.PLAIN, 24));
+        header.setName("Modify Settings");
         window.add(header, c);
         
         // Field in the black square
@@ -76,47 +81,59 @@ public class GameWizard implements ActionListener
         c.gridx = 0;
         c.gridy = 0;
         c.insets = new Insets(15,20,5,20);
-        innerPane.add(new JLabel("Name of Player 1: "),c);
+        innerPane.add(p1,c);
+        p1.setName("Name of Player 1");
         c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(15,0,5,0);
         innerPane.add(player1,c);
+        player1.setName("Player1 Field");
         
         c.gridx = 0;
         c.gridy = 1;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Name of Player 2: "),c);
+        innerPane.add(p2,c);
+        p2.setName("Name of Player 2");
         c.gridx = 1;
         c.gridy = 1;
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player2,c);
+        player2.setName("Player2 Field");
         
         c.gridx = 0;
         c.gridy = 2;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Name of Player 3: "),c);
+        innerPane.add(p3,c);
+        p3.setName("Name of Player 3");
         c.gridx = 1;
         c.gridy = 2;
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player3,c);
+        player3.setName("Player3 Field");
         
         c.gridx = 0;
         c.gridy = 3;
         c.insets = new Insets(5,20,5,20);
-        innerPane.add(new JLabel("Name of Player 4: "),c);
+        innerPane.add(p4,c);
+        p4.setName("Name of Player 4");
         c.gridx = 1;
         c.gridy = 3;
         c.insets = new Insets(5,0,5,0);
         innerPane.add(player4,c);
+        player4.setName("Player4 Field");
         
         // "Game Model" field
         gameNames.setModel(model);
+        gameNames.setName("game names");
         gameNames.addItem("Normal Game");
         JPanel gameMode = new JPanel(new GridBagLayout());
         TitledBorder title = BorderFactory.createTitledBorder("Game Mode");
         gameMode.setBorder(title);
         easy.setSelected(true);
         ButtonGroup mode = new ButtonGroup();
+        easy.setName("easy");
+        medium.setName("medium");
+        hard.setName("hard");
         mode.add(easy);
         mode.add(medium);
         mode.add(hard);
@@ -191,6 +208,7 @@ public class GameWizard implements ActionListener
         c.gridwidth = 3;
         c.insets = new Insets(20,10,15,20);
         innerPane.add(boardButton,c);
+        boardButton.setName("Preview Board");
         boardButton.addActionListener(this);
       
         // add "inner panel,"back" button, "play" button to the window
@@ -206,12 +224,14 @@ public class GameWizard implements ActionListener
         c.ipady = 5;
         c.insets = new Insets(0,30,20,350);
         window.add(backButton, c);
+        backButton.setName("Back");
         backButton.addActionListener(this);
         
         c.gridx = 2;
         c.gridy = 3;
         c.insets = new Insets(0,30,20,30);
         window.add(playButton, c);
+        playButton.setName("Play");
         playButton.addActionListener(this);
         window.pack();
 
@@ -239,6 +259,11 @@ public class GameWizard implements ActionListener
             BlokusGame bg = new BlokusGame();
             //save board to database and then take back to menu with it added to the GUI 
         }
+    }
+    
+    public JFrame getWindow()
+    {
+    	return window;
     }
     
 }

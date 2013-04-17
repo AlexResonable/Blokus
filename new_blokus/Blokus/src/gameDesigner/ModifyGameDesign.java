@@ -97,6 +97,7 @@ public class ModifyGameDesign implements ActionListener {
         logout.setForeground(Color.blue);
         logout.addActionListener(this);
         logout.setName("Logout");
+        logout.setToolTipText("Back to the user login page");
         window.add(logout, c);
         
         Border borderBlack = BorderFactory.createEtchedBorder(EtchedBorder.RAISED, Color.lightGray, Color.blue);
@@ -248,18 +249,21 @@ public class ModifyGameDesign implements ActionListener {
         
         JPanel gameMode = new JPanel(new GridBagLayout());
         TitledBorder title = BorderFactory.createTitledBorder("Game Mode");
+        medium.setToolTipText("Choose if game moderately easy");
+        hard.setToolTipText("Choose if game is challenging");
+        easy.setToolTipText("Choose if game is easy");
         gameMode.setBorder(title);
         if(game.getMode() == 1){
              medium.setSelected(true);
-             medium.setToolTipText("Choose if game moderately easy");
+             
         }
         else if(game.getMode() == 2){
              hard.setSelected(true);
-             hard.setToolTipText("Choose if game is challenging");
+             
         }
         else{
              easy.setSelected(true);
-             easy.setToolTipText("Choose if game is easy");
+             
         }
         mode.add(easy);
         mode.add(medium);

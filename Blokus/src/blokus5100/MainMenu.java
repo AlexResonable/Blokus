@@ -29,6 +29,7 @@ public class MainMenu extends JPanel
 		// "Game title"
 		this.setLayout(null);
 		gameTitle = new JLabel();
+		gameTitle.setName("BLOCKUS GAME");
 		gameTitle.setFont(new Font("Bodoni MT Black", Font.BOLD, 42));
 		
 		gameTitle.setHorizontalAlignment(JLabel.CENTER);
@@ -38,12 +39,14 @@ public class MainMenu extends JPanel
 		
 		// "Team name"
 		copyRight = new JLabel();
+		copyRight.setName("by The Dream Team");
 		copyRight.setFont(new Font("Arial", Font.ITALIC, 20));
 		copyRight.setText("by The Dream Team");
 		
 		
 		// "Play" button
 		b1 = new JButton("PLAY");
+		b1.setName("PLAY");
 		b1.addActionListener( new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e)
@@ -56,6 +59,7 @@ public class MainMenu extends JPanel
 		
 		//"Instruction button"
 		b2 = new JButton("HOW TO PLAY");
+		b2.setName("Instruction");
 		b2.addActionListener(new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -70,6 +74,7 @@ public class MainMenu extends JPanel
 		
 		//"Log in button"
 		b3 = new JButton("LOG IN");
+		b3.setName("LOG IN");
 		b3.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -81,6 +86,7 @@ public class MainMenu extends JPanel
 		
 		//"Exit" button
 		b4 = new JButton("EXIT");
+		b4.setName("EXIT");
 		b4.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -90,6 +96,7 @@ public class MainMenu extends JPanel
 		
 		//"High score" button
 		b5 = new JButton("HIGH SCORES");
+		b5.setName("HIGH SCORES");
 		b5.addActionListener( new ActionListener(){
 			public void actionPerformed(ActionEvent e){
 				frame.dispose();
@@ -155,6 +162,11 @@ public class MainMenu extends JPanel
 	public static void main(String[] args) 
 	{
 		createAndShowGUI();
+	}
+	
+	public JFrame getFrame()
+	{
+		return frame;
 	}
 
 	

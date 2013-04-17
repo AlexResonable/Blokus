@@ -57,6 +57,7 @@ public class SystemAdministratorMain extends JPanel
 		});
 		
 		logoutButton = new JButton("Log out");
+		logoutButton.setToolTipText("Back to the user lognin page");
                 logoutButton.setName("Logout"); 
 		logoutButton.setContentAreaFilled(false);
                 logoutButton.setBorderPainted(false);
